@@ -4,7 +4,6 @@ import pytesseract
 import cv2
 from PIL import Image
 
-
 def text_recognition(post):
     meme_name = "temp"          # We would just call all the temporary images as "temp"
     urllib.urlretrieve(post.url, filename=meme_name) # Here we are downloading the appropriate image (png, jpg, jpeg, bmp)
