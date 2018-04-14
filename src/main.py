@@ -32,7 +32,7 @@ reddit = praw.Reddit(client_id=config.client_id,
                      password=config.password,
                      user_agent=config.user_agent)
 
-subreddit = reddit.subreddit('pewds_test')
+subreddit = reddit.subreddit('prequelmemes')
 
 pattern = re.compile(".(jpe?g|png|gifv?)(\?\S*)?")
 
@@ -86,17 +86,17 @@ def submission_thread():
 
                             reply = message
 
-                            print(reply)
+#                            print(reply)
                             
                             reply = reply.replace("%CITATION%", citation)
                             reply = reply.replace("%START%", riptime(start))
                             reply = reply.replace("%END%", riptime(end))
                             reply = reply.replace("%MOVIE%", movie)
 
-                            print(reply)
+#                            print(reply)
                             
                             post.reply(reply)
-                            time.sleep(30)
+                            time.sleep(300)
                             
                             break
                                            
