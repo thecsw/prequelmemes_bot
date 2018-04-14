@@ -6,7 +6,7 @@ from PIL import Image
 
 def text_recognition(post):
     meme_name = "temp"          # We would just call all the temporary images as "temp"
-    urllib.urlretrieve(post.url, filename=meme_name) # Here we are downloading the appropriate image (png, jpg, jpeg, bmp)
+    urllib.request.urlretrieve(post.url, filename=meme_name) # Here we are downloading the appropriate image (png, jpg, jpeg, bmp)
     image = cv2.imread(meme_name)                    # We load up the image using opencv
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # Turning the image to grayscale
     gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] # Making a threshold for the image, text will be more apparent
