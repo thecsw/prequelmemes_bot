@@ -55,7 +55,7 @@ def submission_thread():
             
             try:
                 text = text_recognition(post).lower()
-                print("\tText from the image:\t{}\n".format(str(text)))
+                print("\tText from the image:\t{}\n".format(str(text.decode("utf-8"))))
                 if (text.decode("utf-8")) == "":
                     print("Empty string. Continuing")
                     continue
@@ -71,34 +71,39 @@ def submission_thread():
                     # file_full_name = ("subtitles/" + file_name).encode("utf-8")
                     subs = pysrt.open("subtitles/{}".format(file_name))
                     for single_sub in subs:
-                        if str(text.decode("utf-8")) in (str(single_sub.text)).lower():
-                            print("Found the quote!")
-                            citation = single_sub.text.replace("\n", " ")
-                            start = single_sub.start
-                            end = single_sub.end
-                            movie = file_name.replace("_", " ")
-                            movie = movie.replace(".srt", "")
 
-                            print(citation)
-                            print(riptime(start))
-                            print(riptime(end))
-                            print(movie)
+                        key = str(text.decode("utf-8")).lower()
 
-                            reply = message
+                        for sentence in key.split():
+                        
+                            if sentence in (str(single_sub.text)).lower():
+                                print("Found the quote!")
+                                citation = single_sub.text.replace("\n", " ")
+                                start = single_sub.start
+                                end = single_sub.end
+                                movie = file_name.replace("_", " ")
+                                movie = movie.replace(".srt", "")
+                                
+                                print(citation)
+                                print(riptime(start))
+                                print(riptime(end))
+                                print(movie)
 
-#                            print(reply)
-                            
-                            reply = reply.replace("%CITATION%", citation)
-                            reply = reply.replace("%START%", riptime(start))
-                            reply = reply.replace("%END%", riptime(end))
-                            reply = reply.replace("%MOVIE%", movie)
+                                reply = message
+                                
+                                #                            print(reply)
+                                
+                                reply = reply.replace("%CITATION%", citation)
+                                reply = reply.replace("%START%", riptime(start))
+                                reply = reply.replace("%END%", riptime(end))
+                                reply = reply.replace("%MOVIE%", movie)
 
-#                            print(reply)
-                            
-                            post.reply(reply)
-                            time.sleep(300)
-                            
-                            break
+                                #                            print(reply)
+                                
+                                post.reply(reply)
+                                time.sleep(300)
+                                
+                                break
                                            
         else:
             print("It is not an image. Skipping...")
