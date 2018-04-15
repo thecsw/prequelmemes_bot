@@ -8,15 +8,21 @@
 |_|                |_|                                                
                                                                                                                                                   
 """
+# All the necessary imports
+
 import os, sys, time
+
+from threading import Thread
+
+import re
+
+# Separate pip modules/packages
 
 import praw
 
 import pysrt
 
-from threading import Thread
-
-import re
+# Our own scripts
 
 from text_recognition import *
 
@@ -24,91 +30,118 @@ from message import message
 
 import config
 
-from threading import Thread
-
 reddit = praw.Reddit(client_id=config.client_id,
                      client_secret=config.client_secret,
                      username=config.username,
                      password=config.password,
                      user_agent=config.user_agent)
 
+#subreddit = reddit.subreddit('prequelmemes')
 subreddit = reddit.subreddit('prequelmemes')
 
-pattern = re.compile(".(jpe?g|png|gifv?)(\?\S*)?")
+subs_dir = "./subtitles/"
 
 def riptime(subrip_time):
+
     hours = subrip_time.hours
     minutes = subrip_time.minutes
     seconds = subrip_time.seconds
     time_string = "{}:{}:{}".format(hours, minutes, seconds)
+
     return time_string
+
+def reply_post(post, msg):
+
+    post.reply(msg)
+    time.sleep(250)
+
+def modify_message(quote, movie, start, end):
+    
+    reply = message
+    reply = reply.replace("%CITATION%", quote)
+    reply = reply.replace("%START%", start)
+    reply = reply.replace("%END%", end)
+    reply = reply.replace("%MOVIE%", movie)
+
+    return reply
+
+def replace_chars(text):
+    # This is really bad
+    chars = "!@#$%^&*()-_=+,'\";:{}[]\\/`~?.<> "
+    for char in chars:
+        text = text.replace(char, "")
+    return text
+
+def parse_url(post):
+
+    pattern = re.compile(".(jpe?g|png|gifv?)(\?\S*)?")
+
+    if pattern.search(post.url) is not None:
+        print("\tMatched the pattern, it has our content.")
+        return True
+    else:
+        return False
+        
 
 def submission_thread():
 
     for submission in subreddit.stream.submissions():
+
         post = reddit.submission(submission)
         
         print("Parsing post -> {}".format(post.id))
 
-        if pattern.search(post.url) is not None:
-            print("\tMatched the pattern, it has our content.")
-            
+        if (parse_url(post)):
             try:
-                text = text_recognition(post).lower()
-                print("\tText from the image:\t{}\n".format(str(text.decode("utf-8"))))
-                if (text.decode("utf-8")) == "":
-                    print("Empty string. Continuing")
-                    continue
-
+                recog_text = text_recognition(post).decode("utf-8").lower()
             except Exception as e:
-                print(e)
+                print("Failed at reading text. Skipping...\n")
                 continue
-            
-            # Don't get scared from the for loops below
-            # They are really small and thus fast
-            for (root, dirs, files) in os.walk('./subtitles/'):
-                for file_name in files:
-                    # file_full_name = ("subtitles/" + file_name).encode("utf-8")
-                    subs = pysrt.open("subtitles/{}".format(file_name))
-                    for single_sub in subs:
-
-                        key = str(text.decode("utf-8")).lower()
-
-                        for sentence in key.split():
-                        
-                            if sentence in (str(single_sub.text)).lower():
-                                print("Found the quote!")
-                                citation = single_sub.text.replace("\n", " ")
-                                start = single_sub.start
-                                end = single_sub.end
-                                movie = file_name.replace("_", " ")
-                                movie = movie.replace(".srt", "")
-                                
-                                print(citation)
-                                print(riptime(start))
-                                print(riptime(end))
-                                print(movie)
-
-                                reply = message
-                                
-                                #                            print(reply)
-                                
-                                reply = reply.replace("%CITATION%", citation)
-                                reply = reply.replace("%START%", riptime(start))
-                                reply = reply.replace("%END%", riptime(end))
-                                reply = reply.replace("%MOVIE%", movie)
-
-                                #                            print(reply)
-                                
-                                post.reply(reply)
-                                time.sleep(300)
-                                
-                                break
-                                           
         else:
             print("It is not an image. Skipping...")
             continue
+            
+        # Don't get scared from the for loops below
+        # They are really small and thus fast
+        
+        formatted_text = replace_chars(recog_text).lower()
+        formatted_text = formatted_text.split()
+        lines = len(formatted_text)
 
+        print(formatted_text)
+
+        # wtf
+        for sentence in range(len(formatted_text)):
+            if len(formatted_text[sentence]) < 6:
+                print("Too small, skipping this element")
+                formatted_text[sentence] = "999999"
+                
+                
+        for (root, dirs, files) in os.walk(subs_dir):
+            for file in files:
+                file_name = subs_dir + file
+                print(file_name)
+                subs = pysrt.open(file_name)
+                for i in range(lines):
+                    for quote in subs:
+                        quote_text = quote.text
+                        quote_text = replace_chars(quote_text).lower()
+                        quote_text = quote_text.replace("\n","")
+                        if formatted_text[i] in quote_text:
+                            print("Found it!!!\n")
+                            print(quote.text)
+                            print(quote.start)
+                            print(quote.end)
+                            reply = modify_message(quote.text.replace("\n", " "),
+                                                   file.replace("_", " ").replace(".srt", ""),
+                                                   riptime(quote.start),
+                                                   riptime(quote.end)
+                            )
+                            print(reply)
+                            reply_post(submission, reply)
+                            print("Sent the reply! Will be waiting!!!\n\n\n")
+                            break
+                
 def threads():
     Thread(name="Submissions", target=submission_thread).start()
         
