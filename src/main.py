@@ -53,7 +53,7 @@ def riptime(subrip_time):
 def reply_post(post, msg):
 
     post.reply(msg)
-    time.sleep(250)
+    time.sleep(60)
 
 def modify_message(quote, movie, start, end):
     
@@ -114,19 +114,24 @@ def submission_thread():
         for sentence in range(len(formatted_text)):
             if len(formatted_text[sentence]) < 9:
                 print("Too small, skipping this element")
+                # Some gibberish value that is not present
                 formatted_text[sentence] = "999999"
                 
-                
+        # I will add some comments, 'cause 
         for (root, dirs, files) in os.walk(subs_dir):
+            
             for file in files:
                 file_name = subs_dir + file
                 print(file_name)
                 subs = pysrt.open(file_name)
+
                 for i in range(lines):
+
                     for quote in subs:
                         quote_text = quote.text
                         quote_text = replace_chars(quote_text).lower()
                         quote_text = quote_text.replace("\n","")
+
                         if formatted_text[i] in quote_text:
                             print("Found it!!!\n")
                             print(quote.text)
@@ -143,11 +148,11 @@ def submission_thread():
                             break
 
 def save_karma():
-    memepolice = reddit.redditor("MemePolice_bot")
+    memepolice = reddit.redditor("prequelmemes_bot")
     while True:
         for comment in memepolice.comments.new(limit=100):
             # It will parse 100 comments in 5-6 seconds
-            if comment.ups < -1:
+            if comment.ups < -2:
                 comment.delete()
 
         # 1 hour of sleep
