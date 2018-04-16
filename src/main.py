@@ -133,12 +133,8 @@ def submission_thread():
         lines = len(formatted_text)
 
         print(formatted_text)
-
-        for sentence in formatted_text:
-            if len(formatted_text) < 9:
-                print("Too small, skipping this element")
-                # Some gibberish value that is not present
-                continue
+        
+        formatted_text = [i for i in formatted_text if len(i) > 8]
 
         search_quote(formatted_text, lines, submission)
 
