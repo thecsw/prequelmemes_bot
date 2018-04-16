@@ -141,9 +141,21 @@ def submission_thread():
                             reply_post(submission, reply)
                             print("Sent the reply! Will be waiting!!!\n\n\n")
                             break
-                
+
+def save_karma():
+    memepolice = reddit.redditor("MemePolice_bot")
+    while True:
+        for comment in memepolice.comments.new(limit=100):
+            # It will parse 100 comments in 5-6 seconds
+            if comment.ups < -1:
+                comment.delete()
+
+        # 1 hour of sleep
+        time.sleep(3600)
+                        
 def threads():
     Thread(name="Submissions", target=submission_thread).start()
-        
+    Thread(name="Save Karma", target=save_karma).start()
+
 def main():
     threads()
