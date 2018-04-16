@@ -98,7 +98,8 @@ def search_quote(formatted_text, lines, submission):
                     print(quote.start)
                     print(quote.end)
                     reply = modify_message(quote.text.replace("\n", " "),
-                                           file.replace("_", " ").replace(".srt", ""),
+                                           # I am sorry, bad hack. Will fix.
+                                           filename.replace("_", " ").replace(".srt", "").replace(subs_dir, "")
                                            riptime(quote.start),
                                            riptime(quote.end)
                     )
