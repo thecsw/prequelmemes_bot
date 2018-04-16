@@ -130,12 +130,11 @@ def submission_thread():
         
         formatted_text = replace_chars(recog_text).lower()
         formatted_text = formatted_text.split()
-        lines = len(formatted_text)
-
+        
         print(formatted_text)
         
         formatted_text = [i for i in formatted_text if len(i) > 8]
-
+        lines = len(formatted_text)
         search_quote(formatted_text, lines, submission)
 
 def save_karma():
