@@ -82,7 +82,37 @@ def parse_url(post):
     else:
         return False
         
-
+def search_quote(formatted_text, lines):
+    # I will add some comments, 'cause 
+    for (root, dirs, files) in os.walk(subs_dir):
+        
+        for file in files:
+            file_name = subs_dir + file
+            print(file_name)
+            subs = pysrt.open(file_name)
+            
+            for i in range(lines):
+                
+                for quote in subs:
+                    quote_text = quote.text
+                    quote_text = replace_chars(quote_text).lower()
+                    quote_text = quote_text.replace("\n","")
+                    
+                    if formatted_text[i] in quote_text:
+                        print("Found it!!!\n")
+                        print(quote.text)
+                        print(quote.start)
+                        print(quote.end)
+                        reply = modify_message(quote.text.replace("\n", " "),
+                                               file.replace("_", " ").replace(".srt", ""),
+                                               riptime(quote.start),
+                                               riptime(quote.end)
+                        )
+                        print(reply)
+                        reply_post(submission, reply)
+                        print("Sent the reply! Will be waiting!!!\n\n\n")
+                        return
+                    
 def submission_thread():
 
     for submission in subreddit.stream.submissions():
@@ -116,36 +146,8 @@ def submission_thread():
                 print("Too small, skipping this element")
                 # Some gibberish value that is not present
                 formatted_text[sentence] = "999999"
-                
-        # I will add some comments, 'cause 
-        for (root, dirs, files) in os.walk(subs_dir):
-            
-            for file in files:
-                file_name = subs_dir + file
-                print(file_name)
-                subs = pysrt.open(file_name)
 
-                for i in range(lines):
-
-                    for quote in subs:
-                        quote_text = quote.text
-                        quote_text = replace_chars(quote_text).lower()
-                        quote_text = quote_text.replace("\n","")
-
-                        if formatted_text[i] in quote_text:
-                            print("Found it!!!\n")
-                            print(quote.text)
-                            print(quote.start)
-                            print(quote.end)
-                            reply = modify_message(quote.text.replace("\n", " "),
-                                                   file.replace("_", " ").replace(".srt", ""),
-                                                   riptime(quote.start),
-                                                   riptime(quote.end)
-                            )
-                            print(reply)
-                            reply_post(submission, reply)
-                            print("Sent the reply! Will be waiting!!!\n\n\n")
-                            break
+        search_quote(formatted_text, lines)
 
 def save_karma():
     memepolice = reddit.redditor("prequelmemes_bot")
