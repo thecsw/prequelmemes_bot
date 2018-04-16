@@ -11,23 +11,19 @@
 # All the necessary imports
 
 import os, sys, time
-
 from threading import Thread
-
 import re
+import glob
 
 # Separate pip modules/packages
 
 import praw
-
 import pysrt
 
 # Our own scripts
 
 from text_recognition import *
-
 from message import message
-
 import config
 
 reddit = praw.Reddit(client_id=config.client_id,
@@ -84,34 +80,32 @@ def parse_url(post):
         
 def search_quote(formatted_text, lines, submission):
     # I will add some comments, 'cause 
-    for (root, dirs, files) in os.walk(subs_dir):
+    for filename in glob.glob(subs_dir + "*.srt"):
+        print(filename)
         
-        for file in files:
-            file_name = subs_dir + file
-            print(file_name)
-            subs = pysrt.open(file_name)
-            
-            for i in range(lines):
+        subs = pysrt.open(filename)
+
+        for i in range(lines):
                 
-                for quote in subs:
-                    quote_text = quote.text
-                    quote_text = replace_chars(quote_text).lower()
-                    quote_text = quote_text.replace("\n","")
-                    
-                    if formatted_text[i] in quote_text:
-                        print("Found it!!!\n")
-                        print(quote.text)
-                        print(quote.start)
-                        print(quote.end)
-                        reply = modify_message(quote.text.replace("\n", " "),
-                                               file.replace("_", " ").replace(".srt", ""),
-                                               riptime(quote.start),
-                                               riptime(quote.end)
-                        )
-                        print(reply)
-                        reply_post(submission, reply)
-                        print("Sent the reply! Will be waiting!!!\n\n\n")
-                        return
+            for quote in subs:
+                quote_text = quote.text
+                quote_text = replace_chars(quote_text).lower()
+                quote_text = quote_text.replace("\n","")
+                
+                if formatted_text[i] in quote_text:
+                    print("Found it!!!\n")
+                    print(quote.text)
+                    print(quote.start)
+                    print(quote.end)
+                    reply = modify_message(quote.text.replace("\n", " "),
+                                           file.replace("_", " ").replace(".srt", ""),
+                                           riptime(quote.start),
+                                           riptime(quote.end)
+                    )
+                    print(reply)
+                    reply_post(submission, reply)
+                    print("Sent the reply! Will be waiting!!!\n\n\n")
+                    return
                     
 def submission_thread():
 
@@ -139,13 +133,8 @@ def submission_thread():
         lines = len(formatted_text)
 
         print(formatted_text)
-
-        # wtf
-        for sentence in range(len(formatted_text)):
-            if len(formatted_text[sentence]) < 9:
-                print("Too small, skipping this element")
-                # Some gibberish value that is not present
-                formatted_text[sentence] = "999999"
+        
+        formatted_text = [i for i in formatted_text if len(i) > 8]
 
         search_quote(formatted_text, lines, submission)
 
@@ -164,5 +153,5 @@ def threads():
     Thread(name="Submissions", target=submission_thread).start()
     Thread(name="Save Karma", target=save_karma).start()
 
-def main():
+if __name__ == "__main__":
     threads()
