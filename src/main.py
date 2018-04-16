@@ -82,7 +82,7 @@ def parse_url(post):
     else:
         return False
         
-def search_quote(formatted_text, lines):
+def search_quote(formatted_text, lines, submission):
     # I will add some comments, 'cause 
     for (root, dirs, files) in os.walk(subs_dir):
         
@@ -147,7 +147,7 @@ def submission_thread():
                 # Some gibberish value that is not present
                 formatted_text[sentence] = "999999"
 
-        search_quote(formatted_text, lines)
+        search_quote(formatted_text, lines, submission)
 
 def save_karma():
     memepolice = reddit.redditor("prequelmemes_bot")
