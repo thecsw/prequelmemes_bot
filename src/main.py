@@ -112,7 +112,7 @@ def submission_thread():
 
         # wtf
         for sentence in range(len(formatted_text)):
-            if len(formatted_text[sentence]) < 6:
+            if len(formatted_text[sentence]) < 9:
                 print("Too small, skipping this element")
                 formatted_text[sentence] = "999999"
                 
