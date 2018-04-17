@@ -22,8 +22,8 @@ import pysrt
 
 # Our own scripts
 
-from text_recognition import *
-from message import message
+from text_recognition import text_recognition
+from message import *
 import config
 
 reddit = praw.Reddit(client_id=config.client_id,
@@ -32,8 +32,12 @@ reddit = praw.Reddit(client_id=config.client_id,
                      password=config.password,
                      user_agent=config.user_agent)
 
-#subreddit = reddit.subreddit('prequelmemes')
 subreddit = reddit.subreddit('prequelmemes')
+
+# subreddit = reddit.subreddit('pewds_test')
+# If you want to test it out, go to r/pewds_test
+# I created this subreddit just for personal testings
+# Feel free to use it
 
 subs_dir = "./subtitles/"
 
@@ -49,17 +53,9 @@ def riptime(subrip_time):
 def reply_post(post, msg):
 
     post.reply(msg)
+    print("Sent the reply! Will be waiting!!!\n\n\n")
     time.sleep(60)
 
-def modify_message(quote, movie, start, end):
-    
-    reply = message
-    reply = reply.replace("%CITATION%", quote)
-    reply = reply.replace("%START%", start)
-    reply = reply.replace("%END%", end)
-    reply = reply.replace("%MOVIE%", movie)
-
-    return reply
 
 def replace_chars(text):
     # This is really bad
@@ -97,15 +93,19 @@ def search_quote(formatted_text, lines, submission):
                     print(quote.text)
                     print(quote.start)
                     print(quote.end)
-                    reply = modify_message(quote.text.replace("\n", " "),
-                                           # I am sorry, bad hack. Will fix.
-                                           filename.replace("_", " ").replace(".srt", "").replace(subs_dir, ""),
-                                           riptime(quote.start),
-                                           riptime(quote.end)
+
+                    citation = quote.text.replace("\n", " ")
+                    movie = filename.replace("_", " ").replace(".srt", "").replace(subs_dir, "")
+                    start = riptime(quote.start)
+                    end = riptime(quote.end)
+
+                    reply = modify_message(citation,
+                                           movie,
+                                           start,
+                                           end
                     )
                     print(reply)
-                    reply_post(submission, reply)
-                    print("Sent the reply! Will be waiting!!!\n\n\n")
+#                    reply_post(submission, reply)
                     return
                     
 def submission_thread():
@@ -120,7 +120,7 @@ def submission_thread():
             try:
                 recog_text = text_recognition(post).decode("utf-8").lower()
             except Exception as e:
-                print("Failed at reading text. Skipping...\n")
+                print("Failed at reading text. Skipping...\n{}".format(e))
                 continue
         else:
             print("It is not an image. Skipping...")
@@ -150,6 +150,10 @@ def submission_thread():
                 print("Something terrible happened. Can't do it.\n{}".format(ee))
                 time.sleep(300)
                 continue
+
+def comment_thread():
+    for comment in subreddit.stream.comments:
+        pass
             
 def save_karma():
     memepolice = reddit.redditor("prequelmemes_bot")
