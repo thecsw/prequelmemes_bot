@@ -58,7 +58,7 @@ def reply_post(post, msg):
 
 
 def replace_chars(text):
-    text = re.sub('[^a-zA-Z0-9]+', '', text)
+    text = re.sub('[^a-zA-Z0-9\n]+', '', text)
     return text
 
 def parse_url(post):
