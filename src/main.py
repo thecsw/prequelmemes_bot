@@ -136,8 +136,21 @@ def submission_thread():
         
         formatted_text = [i for i in formatted_text if len(i) > 8]
         lines = len(formatted_text)
-        search_quote(formatted_text, lines, submission)
 
+        # If the main procedure fails, maybe internet connection is down
+        # Just wait it out
+        try: 
+            search_quote(formatted_text, lines, submission)
+        except Exception as e:
+            print("Error occured: {}".format(e))
+            time.sleep(600)
+            try:
+                search_quote(formatted_text, lines, submission)
+            except Exception as ee:
+                print("Something terrible happened. Can't do it.\n{}".format(ee))
+                time.sleep(300)
+                continue
+            
 def save_karma():
     memepolice = reddit.redditor("prequelmemes_bot")
     while True:
