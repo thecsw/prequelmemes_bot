@@ -105,7 +105,7 @@ def search_quote(formatted_text, lines, submission):
                                            end
                     )
                     print(reply)
-#                    reply_post(submission, reply)
+                    reply_post(submission, reply)
                     return
                     
 def submission_thread():
