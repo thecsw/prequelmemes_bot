@@ -58,10 +58,7 @@ def reply_post(post, msg):
 
 
 def replace_chars(text):
-    # This is really bad
-    chars = "!@#$%^&*()-_=+,'\";:{}[]\\/`~?.<> "
-    for char in chars:
-        text = text.replace(char, "")
+    text = re.sub('[^a-zA-Z0-9]+', '', text)
     return text
 
 def parse_url(post):
