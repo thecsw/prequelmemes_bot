@@ -58,10 +58,7 @@ def reply_post(post, msg):
 
 
 def replace_chars(text):
-    # This is really bad
-    chars = "!@#$%^&*()-_=+,'\";:{}[]\\/`~?.<> "
-    for char in chars:
-        text = text.replace(char, "")
+    text = re.sub('[^a-zA-Z0-9\n]+', '', text)
     return text
 
 def parse_url(post):
@@ -105,7 +102,7 @@ def search_quote(formatted_text, lines, submission):
                                            end
                     )
                     print(reply)
-#                    reply_post(submission, reply)
+                    reply_post(submission, reply)
                     return
                     
 def submission_thread():
