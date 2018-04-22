@@ -1,7 +1,7 @@
 ÃÂ¯ÃÂ»ÃÂ¿0
 00:00:00,000 --> 00:00:24,500
 <b><font color="#909090">^.^.^.^.subtitles by.^.^.^.^</font></b>
-<b><font color="#804040">ÃÂÃÂ®</font></b> <b><font color=#ff0000>Sud_Arun collections</font></b> <b><font color="#804040">ÃÂÃÂ®</font></b>
+<b><font color="#804040">ÃÂÃÂ®</font></b> <b><font color=#ff0000>Sud_Arun collections</font></b> <b><font color="#804040">ÃÂÃ:Â®</font></b>
 
 1
 00:01:30,492 --> 00:01:31,812
@@ -30,7 +30,7 @@ You know what to do.
 6
 00:02:10,412 --> 00:02:11,846
 Jyn, come here.
-
+v
 7
 00:02:12,412 --> 00:02:14,802
 Remember, whatever I do,
