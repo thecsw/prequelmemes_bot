@@ -41,11 +41,16 @@ subreddit = reddit.subreddit('prequelmemes')
 
 subs_dir = "./subtitles/"
 
+def add_zero(string):
+    if (len(string)==1):
+        string = "0" + string
+    return string
+
 def riptime(subrip_time):
 
-    hours = subrip_time.hours
-    minutes = subrip_time.minutes
-    seconds = subrip_time.seconds
+    hours = add_zero(subrip_time.hours)
+    minutes = add_zero(subrip_time.minutes)
+    seconds = add_zero(subrip_time.seconds)
     time_string = "{}:{}:{}".format(hours, minutes, seconds)
 
     return time_string
