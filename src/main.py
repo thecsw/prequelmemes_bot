@@ -48,9 +48,9 @@ def add_zero(string):
 
 def riptime(subrip_time):
 
-    hours = add_zero(subrip_time.hours)
-    minutes = add_zero(subrip_time.minutes)
-    seconds = add_zero(subrip_time.seconds)
+    hours = add_zero(str(subrip_time.hours))
+    minutes = add_zero(str(subrip_time.minutes))
+    seconds = add_zero(str(subrip_time.seconds))
     time_string = "{}:{}:{}".format(hours, minutes, seconds)
 
     return time_string
