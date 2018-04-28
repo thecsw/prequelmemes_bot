@@ -120,7 +120,7 @@ def submission_thread():
 
         if (parse_url(post)):
             try:
-                recog_text = text_recognition(post).decode("utf-8").lower().reverse()
+                recog_text = text_recognition(post).decode("utf-8").lower()
             except Exception as e:
                 print("Failed at reading text. Skipping...\n{}".format(e))
                 continue
@@ -132,7 +132,7 @@ def submission_thread():
         # They are really small and thus fast
         
         formatted_text = replace_chars(recog_text).lower()
-        formatted_text = formatted_text.split()
+        formatted_text = formatted_text.split().reverse()
         
         print(formatted_text)
         
