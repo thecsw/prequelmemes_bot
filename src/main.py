@@ -133,6 +133,7 @@ def submission_thread():
         
         formatted_text = replace_chars(recog_text).lower()
         formatted_text = formatted_text.split()
+        formatted_text = formatted_text[::-1]
         
         print(formatted_text)
 
