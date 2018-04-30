@@ -4,3 +4,4 @@ pytesseract
 opencv-python
 Pillow
 pysrt
+tqdm

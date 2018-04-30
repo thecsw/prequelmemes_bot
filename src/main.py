@@ -19,6 +19,7 @@ import glob
 
 import praw
 import pysrt
+import tqdm
 
 # Our own scripts
 
@@ -112,7 +113,7 @@ def search_quote(formatted_text, lines, submission):
                     
 def submission_thread():
 
-    for submission in subreddit.stream.submissions():
+    for submission in tqdm(subreddit.stream.submissions()):
 
         post = reddit.submission(submission)
         
