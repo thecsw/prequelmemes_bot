@@ -135,6 +135,10 @@ def submission_thread():
         formatted_text = formatted_text.split()
         
         print(formatted_text)
+
+        # If the list is empty, no need for scanning
+        if (len(formatted_text) == 0):
+            continue
         
         formatted_text = [i for i in formatted_text if len(i) > 8]
         lines = len(formatted_text)
