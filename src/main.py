@@ -19,7 +19,7 @@ import glob
 
 import praw
 import pysrt
-import tqdm
+from tqdm import tqdm
 
 # Our own scripts
 
