@@ -40,7 +40,7 @@ recognition properly. We will also install the tesseract OCR trained
 languages for better accuracy and we will install only the English 
 packages. For more information about other languages, please refer to 
 tesseract's official 
-[repository on Github](https://github.com/tesseract-ocr/tesseract).
+[[https://github.com/tesseract-ocr/tesseract][repository on Github]].
 
 **** Linux
 
@@ -72,8 +72,8 @@ config profile you should fill your Reddit API details.
 For that please follow the steps below
 
 #+BEGIN_SRC screen
-git clone https://github.com/thecsw/MemePolice_bot
-cd MemePolice_bot
+git clone https://github.com/thecsw/prequelmemes_bot
+cd prequelmemes_bot
 mv example.config.py config.py
 nano config.py
 #+END_SRC
