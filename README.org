@@ -26,19 +26,12 @@ OR
 #+BEGIN_SRC screen
 pip install --upgrade -r requirements.txt
 #+END_SRC
-
-[[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only 
-package to connect to Reddit's API and extract desired data.
-
-[[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer 
-vision problems.
-
-[[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
-
-[[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and 
-Contributors.
-
-[[https://pypi.python.org/pypi/tqdm][tqdm]] is used for fancy progress bars.
+1. [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
+   connect to Reddit's API and extract desired data.
+2. [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
+3. [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
+4. [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
+5. [[https://pypi.python.org/pypi/tqdm][tqdm]] is used for fancy progress bars.
 
 *** Other Dependencies
 
@@ -105,12 +98,12 @@ the archives will never be incomplete.
    The code is heavily commented and all the important modules are being separated into different files. Looks pretty, dunno.
 
 ** Built With
- - [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
-   connect to Reddit's API and extract desired data.
- - [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
- - [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
- - [[https://pypi.python.org/pypi/tqdm][tqdm]] is used for fancy progress bars.
- - [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
+ 1. [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
+    connect to Reddit's API and extract desired data.
+ 2. [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
+ 3. [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
+ 4. [[https://pypi.python.org/pypi/tqdm][tqdm]] is used for fancy progress bars.
+ 5. [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
 
 ** Authors
  - *Sagindyk Urazayev* - /Initial work/ - [[https://github.com/thecsw][thecsw]]
