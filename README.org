@@ -1,14 +1,122 @@
 #+TITLE: u/prequelmemes_bot Documentation
 #+AUTHOR: thecsw
 
-* Introduction
+*Hello there!*
 
-some blind text...
+Welcome to the source page of u/prequelmemes_bot! Nice to meet you. First of all, let me talk you through what the bot does and details later.
 
-** New chapter
+** Getting started 
 
-* New chpater
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+See deployment for notes on how to deploy the project on a live system.
 
-dasdas
-dasdas
+*** Prerequisites
 
+#+BEGIN_SRC screen
+sudo pip install praw
+sudo pip install python-opencv
+sudo pip install pytesseract
+sudo pip install tesseract-ocr
+sudo pip install Pillow
+sudo pip install tqdm
+#+END_SRC
+
+OR
+
+#+BEGIN_SRC screen
+pip install --upgrade -r requirements.txt
+#+END_SRC
+
+[[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only 
+package to connect to Reddit's API and extract desired data.
+
+[[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer 
+vision problems.
+
+[[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
+
+[[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and 
+Contributors.
+
+[[https://pypi.python.org/pypi/tqdm][tqdm]] is used for fancy progress bars.
+
+*** Other Dependencies
+
+Tesseract engine should be installed on a local machine to run the text
+recognition properly. We will also install the tesseract OCR trained 
+languages for better accuracy and we will install only the English 
+packages. For more information about other languages, please refer to 
+tesseract's official 
+[repository on Github](https://github.com/tesseract-ocr/tesseract).
+
+**** Linux
+
+***** Debian, Ubuntu (aptitude)
+
+#+BEGIN_SRC screen
+sudo apt-get install tesseract-ocr
+sudo apt-get install tesseract-ocr-eng
+#+END_SRC
+
+***** Arch Linux (pacman)
+
+#+BEGIN_SRC screen
+sudo pacman -S tesseract
+sudo pacman -S tesseract-data-eng
+#+END_SRC
+
+**** Mac OS (homebrew)
+#+BEGIN_SRC screen
+brew install tesseract
+#+END_SRC
+
+** Installing
+
+The only thing that needs to be done before execution is the config. The only
+thing that needs to be done before execution is the config profile. In the
+config profile you should fill your Reddit API details.
+
+For that please follow the steps below
+
+#+BEGIN_SRC screen
+git clone https://github.com/thecsw/MemePolice_bot
+cd MemePolice_bot
+mv example.config.py config.py
+nano config.py
+#+END_SRC
+
+After filling out the details, save and exit. You're done with installation.
+
+** Deployment
+
+Remove the word **'example'** from the title of all files with it.
+
+Just run this
+
+#+BEGIN_SRC screen
+python __main__.py
+#+END_SRC
+
+That is everything. All the prequelmemes will be identified. Once and for all,
+the archives will never be incomplete.
+
+** Source code
+
+   The code is heavily commented and all the important modules are being separated into different files. Looks pretty, dunno.
+
+** Built With
+ - [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
+   connect to Reddit's API and extract desired data.
+ - [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
+ - [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
+ - [[https://pypi.python.org/pypi/tqdm][tqdm]] is used for fancy progress bars.
+ - [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
+
+** Authors
+ - *Sagindyk Urazayev* - /Initial work/ - [[https://github.com/thecsw][thecsw]]
+ - *farhank3389* - /Fixes/ - [[https://github.com/farhank3389][farhank3389]]
+
+** License
+
+This project is licensed under the The GNU General Public License (see the
+[[https://github.com/thecsw/prequelmemes_bot/blob/master/LICENSE][LICENSE.md]] file for details), it explains everything pretty well. 
