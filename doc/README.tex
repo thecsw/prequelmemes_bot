@@ -1,0 +1,165 @@
+% Created 2018-05-04 Fri 08:36
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\author{thecsw}
+\date{\today}
+\title{u/prequelmemes$_{\text{bot}}$ Documentation}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 25.3.1 (Org mode 8.2.10)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\textbf{Hello there!}
+
+Welcome to the source page of u/prequelmemes$_{\text{bot}}$! Nice to meet you. First of all, let me talk you through what the bot does and details later.
+
+\section{Getting started}
+\label{sec-1}
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+See deployment for notes on how to deploy the project on a live system.
+
+\subsection{Prerequisites}
+\label{sec-1-1}
+
+\begin{verbatim}
+sudo pip install praw
+sudo pip install python-opencv
+sudo pip install pytesseract
+sudo pip install tesseract-ocr
+sudo pip install Pillow
+sudo pip install tqdm
+\end{verbatim}
+
+OR
+
+\begin{verbatim}
+pip install --upgrade -r requirements.txt
+\end{verbatim}
+\begin{enumerate}
+\item \href{https://github.com/praw-dev/praw}{praw} is Python Reddit API Wrapper. This will be the main and only package to
+connect to Reddit's API and extract desired data.
+\item \href{https://pypi.python.org/pypi/opencv-python}{python-opencv} is used for image transformations and computer vision problems.
+\item \href{https://pypi.python.org/pypi/pytesseract}{pytesseract} is a python wrapper for Google's Tesseract-OCR.
+\item \href{https://pillow.readthedocs.io/en/latest/}{Pillow} is the Python  Imaging Library by Fredrik Lundh and Contributors.
+\item \href{https://pypi.python.org/pypi/tqdm}{tqdm} is used for fancy progress bars.
+\end{enumerate}
+
+\subsection{Other Dependencies}
+\label{sec-1-2}
+
+Tesseract engine should be installed on a local machine to run the text
+recognition properly. We will also install the tesseract OCR trained 
+languages for better accuracy and we will install only the English 
+packages. For more information about other languages, please refer to 
+tesseract's official 
+[repository on Github](\url{https://github.com/tesseract-ocr/tesseract}).
+
+\subsubsection{Linux}
+\label{sec-1-2-1}
+
+\begin{enumerate}
+\item Debian, Ubuntu (aptitude)
+\label{sec-1-2-1-1}
+
+\begin{verbatim}
+sudo apt-get install tesseract-ocr
+sudo apt-get install tesseract-ocr-eng
+\end{verbatim}
+
+\item Arch Linux (pacman)
+\label{sec-1-2-1-2}
+
+\begin{verbatim}
+sudo pacman -S tesseract
+sudo pacman -S tesseract-data-eng
+\end{verbatim}
+\end{enumerate}
+
+\subsubsection{Mac OS (homebrew)}
+\label{sec-1-2-2}
+\begin{verbatim}
+brew install tesseract
+\end{verbatim}
+
+\section{Installing}
+\label{sec-2}
+
+The only thing that needs to be done before execution is the config. The only
+thing that needs to be done before execution is the config profile. In the
+config profile you should fill your Reddit API details.
+
+For that please follow the steps below
+
+\begin{verbatim}
+git clone https://github.com/thecsw/MemePolice_bot
+cd MemePolice_bot
+mv example.config.py config.py
+nano config.py
+\end{verbatim}
+
+After filling out the details, save and exit. You're done with installation.
+
+\section{Deployment}
+\label{sec-3}
+
+Remove the word \textbf{*'example'*} from the title of all files with it.
+
+Just run this
+
+\begin{verbatim}
+python __main__.py
+\end{verbatim}
+
+That is everything. All the prequelmemes will be identified. Once and for all,
+the archives will never be incomplete.
+
+\section{Source code}
+\label{sec-4}
+
+The code is heavily commented and all the important modules are being separated into different files. Looks pretty, dunno.
+
+\section{Built With}
+\label{sec-5}
+\begin{enumerate}
+\item \href{https://github.com/praw-dev/praw}{praw} is Python Reddit API Wrapper. This will be the main and only package to
+connect to Reddit's API and extract desired data.
+\item \href{https://pypi.python.org/pypi/opencv-python}{python-opencv} is used for image transformations and computer vision problems.
+\item \href{https://pypi.python.org/pypi/pytesseract}{pytesseract} is a python wrapper for Google's Tesseract-OCR.
+\item \href{https://pypi.python.org/pypi/tqdm}{tqdm} is used for fancy progress bars.
+\item \href{https://pillow.readthedocs.io/en/latest/}{Pillow} is the Python  Imaging Library by Fredrik Lundh and Contributors.
+\end{enumerate}
+
+\section{Authors}
+\label{sec-6}
+\begin{itemize}
+\item \textbf{Sagindyk Urazayev} - \emph{Initial work} - \href{https://github.com/thecsw}{thecsw}
+\item \textbf{farhank3389} - \emph{Fixes} - \href{https://github.com/farhank3389}{farhank3389}
+\end{itemize}
+
+\section{License}
+\label{sec-7}
+
+This project is licensed under the The GNU General Public License (see the
+\href{https://github.com/thecsw/prequelmemes_bot/blob/master/LICENSE}{LICENSE.md} file for details), it explains everything pretty well. 
+% Emacs 25.3.1 (Org mode 8.2.10)
+\end{document}
