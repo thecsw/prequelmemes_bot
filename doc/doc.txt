@@ -144,7 +144,7 @@ later.
   Just run this
 
   ,----
-  | python __main__.py
+  | python main.py
   `----
 
   That is everything. All the prequelmemes will be identified. Once and

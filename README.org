@@ -87,7 +87,7 @@ Remove the word **'example'** from the title of all files with it.
 Just run this
 
 #+BEGIN_SRC screen
-python __main__.py
+python main.py
 #+END_SRC
 
 That is everything. All the prequelmemes will be identified. Once and for all,
