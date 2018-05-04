@@ -82,8 +82,10 @@ later.
   text recognition properly. We will also install the tesseract OCR
   trained languages for better accuracy and we will install only the
   English packages. For more information about other languages, please
-  refer to tesseract's official [repository on
-  Github]([https://github.com/tesseract-ocr/tesseract]).
+  refer to tesseract's official [repository on Github].
+
+
+  [repository on Github] https://github.com/tesseract-ocr/tesseract
 
 
 1.2.1 Linux
@@ -124,8 +126,8 @@ later.
   For that please follow the steps below
 
   ,----
-  | git clone https://github.com/thecsw/MemePolice_bot
-  | cd MemePolice_bot
+  | git clone https://github.com/thecsw/prequelmemes_bot
+  | cd prequelmemes_bot
   | mv example.config.py config.py
   | nano config.py
   `----
