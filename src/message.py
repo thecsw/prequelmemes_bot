@@ -2,15 +2,14 @@
 message = """
 **Hello there!**
 
-A lot of people do not know where the quotes come from and I am here to help you!
-
 The line "*%CITATION%*" is from **"%MOVIE%"**.
 
 The ~~fun~~ line begins at %START% and finishes at %END%.
 
-I hope I was able to help you!
+Why do I do this? Not because we need but because we can.
 ___________________________
-^(I am a small bot. Still need improving. Want to check out? Go to my source code and commit!)
+^(I am a small bot. Still need improving. Want to check out? Go to my source code and commit! 
+My master is u/Thecsw)
 
 [Source code](https://github.com/thecsw/prequelmemes_bot)
 """
