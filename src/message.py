@@ -8,8 +8,7 @@ The ~~fun~~ line begins at %START% and finishes at %END%.
 
 Why do I do this? Not because we need but because we can.
 ___________________________
-^(I am a small bot. Still need improving. Want to check out? Go to my source code and commit! 
-My master is u/Thecsw)
+^(I am a small bot. Still need improving. Want to check out? Go to my source code and commit!)
 
 [Source code](https://github.com/thecsw/prequelmemes_bot)
 """
