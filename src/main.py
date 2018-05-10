@@ -136,7 +136,7 @@ def submission_thread():
         formatted_text = replace_chars(recog_text).lower()
         formatted_text = formatted_text.split()
         formatted_text = formatted_text[::-1]
-        formatted_text = list(filter(lambda x: not x in banlist, formatted_test))
+        formatted_text = list(filter(lambda x: not x in banlist, formatted_text))
         
         print(formatted_text)
 
