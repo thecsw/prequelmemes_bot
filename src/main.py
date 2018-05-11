@@ -154,13 +154,7 @@ def submission_thread():
             search_quote(formatted_text, lines, submission)
         except Exception as e:
             print("Error occured: {}".format(e))
-            time.sleep(600)
-            try:
-                search_quote(formatted_text, lines, submission)
-            except Exception as ee:
-                print("Something terrible happened. Can't do it.\n{}".format(ee))
-                time.sleep(300)
-                continue
+            continue
 
 def comment_thread():
     for comment in subreddit.stream.comments:
