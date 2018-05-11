@@ -137,15 +137,16 @@ def submission_thread():
         formatted_text = formatted_text.split()
         formatted_text = formatted_text[::-1]
         formatted_text = list(filter(lambda x: not x in banlist, formatted_test))
+        formatted_text = [i for i in formatted_text if len(i) > 8]
         
         print(formatted_text)
 
+        lines = len(formatted_text)
+        
         # If the list is empty, no need for scanning
-        if (len(formatted_text) == 0):
+        if (lines == 0):
             continue
         
-        formatted_text = [i for i in formatted_text if len(i) > 8]
-        lines = len(formatted_text)
 
         # If the main procedure fails, maybe internet connection is down
         # Just wait it out
