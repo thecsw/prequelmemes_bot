@@ -1,11 +1,12 @@
 #+TITLE: u/prequelmemes_bot Documentation
 #+AUTHOR: thecsw
-
+\newpage
 *Hello there!*
 
 Welcome to the source page of u/prequelmemes_bot! Nice to meet you. First of
-all, let me talk you through what the bot does and details later. If you want to
-help the bot, please go down to the TODO list and find your way to contribute! Thanks!
+all, let me talk you through what the bot does and details later. *If you want*
+to help the bot, please go down to the *TODO* list and find your way to
+contribute! /Thanks!/
 
 #+CAPTION: A comment picture.
 #+LABEL: preq_pic

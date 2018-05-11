@@ -20,20 +20,29 @@ _________________
 5 Built With
 6 Authors
 7 License
+8 Todo list
+.. 8.1 TODO Edit the mesage body text.
+.. 8.2 TODO Port the code to python3.6+
+.. 8.3 TODO Get rid of the tqdm.
+.. 8.4 TODO Make some general fixes to the code.
+.. 8.5 TODO Add a comment feature.
 
 
-*Hello there!*
+\newpage *Hello there!*
 
 Welcome to the source page of u/prequelmemes_bot! Nice to meet
 you. First of all, let me talk you through what the bot does and details
-later.
+later. *If you want* to help the bot, please go down to the *TODO* list
+and find your way to contribute! /Thanks!/
+
+[./doc/pic.png]
 
 
 1 Getting started
 =================
 
   These instructions will get you a copy of the project up and running
-  on your local machine for development and testing purposes.  See
+  on your local machine for development and testing purposes. See
   deployment for notes on how to deploy the project on a live system.
 
 
@@ -204,3 +213,50 @@ later.
 
   [LICENSE.md]
   https://github.com/thecsw/prequelmemes_bot/blob/master/LICENSE
+
+
+8 Todo list
+===========
+
+  This is going to be a short todo list. If you have the true loyalty
+  and some free time, try to add/fix the following todo items or add
+  your own with the issues tab or push.
+
+
+8.1 TODO Edit the mesage body text.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The message body text isn't perfect. It can be more prequelmemed. So
+  yeah, if somebody can do it, that would be awesome.
+
+
+8.2 TODO Port the code to python3.6+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Just port the whole code. I am not talking about just using `python3
+  main.py' instead of `python main.py'. I am talking about using the new
+  python3+ features. Like better string formatting, like the
+  `print(f"{args}...")'.
+
+
+8.3 TODO Get rid of the tqdm.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  I don't know whym but tqdm has been throwing some errors at me. I
+  should replace it with some *manual* loop counter. We are talking
+  CS101 here. Heh
+
+
+8.4 TODO Make some general fixes to the code.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Add some little new features, replace old ones with new ones. Make a
+  faster version. Just a general quality assurance.
+
+
+8.5 TODO Add a comment feature.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  I don't have an idea of what to do. I made some prototypes, don't
+  know. If the bot is going to answer to each comment, that is just a
+  spam.
