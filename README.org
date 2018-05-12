@@ -124,28 +124,32 @@ This is going to be a short todo list. If you have the true loyalty and some
 free time, try to add/fix the following todo items or add your own with the
 issues tab or push.
 
-*** TODO [#A] Edit the mesage body text.
+*** TODO:
+
+**** TODO [#A] Edit the mesage body text.
 
 The message body text isn't perfect. It can be more prequelmemed. So yeah, if
 somebody can do it, that would be awesome.
 
-*** TODO [#A] Port the code to python3.6+
+**** TODO [#A] Port the code to python3.6+
 
 Just port the whole code. I am not talking about just using ~python3 main.py~
 instead of ~python main.py~. I am talking about using the new python3+
 features. Like better string formatting, like the ~print(f"{args}...")~.
-*** TODO [#B] Make some general fixes to the code. 
+**** TODO [#B] Make some general fixes to the code. 
 
 Add some little new features, replace old ones with new ones. Make a faster
 version. Just a general quality assurance.
 
-*** TODO [#C] Add a comment feature.
+**** TODO [#C] Add a comment feature.
 
 I don't have an idea of what to do. I made some prototypes, don't know. If the
 bot is going to answer to each comment, that is just a spam.
 
 
-*** DONE [#A] Change tqdm for another approach
+*** DONE:
+
+**** DONE [#A] Change tqdm for another approach
     CLOSED: [2018-05-12 Sat 18:27]
     
 tqdm is throwing some strange annoying warnings. Will need a more *manual* way
