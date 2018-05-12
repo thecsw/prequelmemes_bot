@@ -19,7 +19,6 @@ import glob
 
 import praw
 import pysrt
-from tqdm import tqdm
 
 # Our own scripts
 
@@ -42,6 +41,8 @@ subreddit = reddit.subreddit('prequelmemes')
 # Feel free to use it
 
 subs_dir = "./subtitles/"
+
+counter = 0
 
 def add_zero(string):
     if (len(string)==1):
@@ -78,14 +79,14 @@ def parse_url(post):
     else:
         return False
         
-def search_quote(formatted_text, lines, submission):
+def search_quote(formatted_text, submission):
     # I will add some comments, 'cause 
     for filename in glob.glob(subs_dir + "*.srt"):
         print(filename)
         
         subs = pysrt.open(filename)
 
-        for i in range(lines):
+        for i in range(len(formatted_text)):
                 
             for quote in subs:
                 quote_text = quote.text
@@ -93,10 +94,10 @@ def search_quote(formatted_text, lines, submission):
                 quote_text = quote_text.replace("\n","")
                 
                 if formatted_text[i] in quote_text:
-                    print("Found it!!!\n")
+                    print("Found it!\n")
                     print(quote.text)
                     print(quote.start)
-                    print(quote.end)
+                    print(quote.end) 
 
                     citation = quote.text.replace("\n", " ")
                     movie = filename.replace("_", " ").replace(".srt", "").replace(subs_dir, "")
@@ -113,21 +114,21 @@ def search_quote(formatted_text, lines, submission):
                     return
                     
 def submission_thread():
-
-    for submission in tqdm(subreddit.stream.submissions()):
-
+    
+    for submission in subreddit.stream.submissions():
+        
         post = reddit.submission(submission)
         
-        print("Parsing post -> {}".format(post.id))
+        print("[{}]Parsing post -> {}\n".format(counter, post.id))
 
         if (parse_url(post)):
             try:
                 recog_text = text_recognition(post).decode("utf-8").lower()
             except Exception as e:
-                print("Failed at reading text. Skipping...\n{}".format(e))
+                print("Failed at reading text. Skipping...\n\n{}".format(e))
                 continue
         else:
-            print("It is not an image. Skipping...")
+            print("It is not an image. Skipping..\n\n.")
             continue
             
         # Don't get scared from the for loops below
@@ -141,20 +142,19 @@ def submission_thread():
         
         print(formatted_text)
 
-        lines = len(formatted_text)
-        
         # If the list is empty, no need for scanning
-        if (lines == 0):
+        if (len(formatted_text) == 0):
             continue
         
-
         # If the main procedure fails, maybe internet connection is down
         # Just wait it out
         try: 
-            search_quote(formatted_text, lines, submission)
+            search_quote(formatted_text, len(formatted_text), submission)
         except Exception as e:
-            print("Error occured: {}".format(e))
+            print("Error occured: {}\n".format(e))
             continue
+        
+        counter+=1
 
 def comment_thread():
     for comment in subreddit.stream.comments:
