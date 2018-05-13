@@ -37,6 +37,7 @@ pip install --upgrade -r requirements.txt
 2. [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
 3. [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
 4. [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
+5. [[https://pypi.org/project/tabulate/][tabulate]] is a pretty-print tabular data in Python, a library and a command-line utility
 
 *** Other Dependencies
 
@@ -109,6 +110,7 @@ into different files. Looks pretty, dunno.
  2. [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
  3. [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
  4. [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
+ 5. [[https://pypi.org/project/tabulate/][tabulate]] is a pretty-print tabular data in Python, a library and a command-line utility
 
 ** Authors
  - *Sagindyk Urazayev* - /Initial work/ - [[https://github.com/thecsw][thecsw]]
@@ -127,30 +129,26 @@ issues tab or push.
 *** TODO:
 
 **** TODO [#A] Edit the mesage body text.
-
 The message body text isn't perfect. It can be more prequelmemed. So yeah, if
 somebody can do it, that would be awesome.
 
-**** TODO [#A] Port the code to python3.6+
-
-Just port the whole code. I am not talking about just using ~python3 main.py~
-instead of ~python main.py~. I am talking about using the new python3+
-features. Like better string formatting, like the ~print(f"{args}...")~.
 **** TODO [#B] Make some general fixes to the code. 
-
 Add some little new features, replace old ones with new ones. Make a faster
 version. Just a general quality assurance.
 
 **** TODO [#C] Add a comment feature.
-
 I don't have an idea of what to do. I made some prototypes, don't know. If the
 bot is going to answer to each comment, that is just a spam.
 
-
 *** DONE:
+
+**** DONE [#A] Port the code to python3.6+
+     CLOSED: [2018-05-13 Sun 18:27]
+Just port the whole code. I am not talking about just using ~python3 main.py~
+instead of ~python main.py~. I am talking about using the new python3+
+features. Like better string formatting, like the ~print(f"{args}...")~.
 
 **** DONE [#A] Change tqdm for another approach
     CLOSED: [2018-05-12 Sat 18:27]
-    
 tqdm is throwing some strange annoying warnings. Will need a more *manual* way
 of counting things.    

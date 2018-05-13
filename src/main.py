@@ -1,6 +1,6 @@
+3
 
-"""
-                                 _                                    
+"""                              _                                    
  _ __  _ __ ___  __ _ _   _  ___| |_ __ ___   ___ _ __ ___   ___  ___ 
 | '_ \| '__/ _ \/ _` | | | |/ _ \ | '_ ` _ \ / _ \ '_ ` _ \ / _ \/ __|
 | |_) | | |  __/ (_| | |_| |  __/ | | | | | |  __/ | | | | |  __/\__ \
@@ -24,6 +24,7 @@ import pysrt
 
 from text_recognition import text_recognition
 from banlist import banlist
+from table import table
 from message import *
 import config
 
@@ -33,7 +34,10 @@ reddit = praw.Reddit(client_id=config.client_id,
                      password=config.password,
                      user_agent=config.user_agent)
 
-subreddit = reddit.subreddit('prequelmemes')
+subreddit_name = "prequelmemes"
+bot_name = f"{subreddit_name}_bot"
+
+subreddit = reddit.subreddit(subreddit_name)
 
 # subreddit = reddit.subreddit('pewds_test')
 # If you want to test it out, go to r/pewds_test
@@ -42,11 +46,9 @@ subreddit = reddit.subreddit('prequelmemes')
 
 subs_dir = "./subtitles/"
 
-counter = 0
-
 def add_zero(string):
     if (len(string)==1):
-        string = "0" + string
+        string = f"0{string}"
     return string
 
 def riptime(subrip_time):
@@ -54,14 +56,13 @@ def riptime(subrip_time):
     hours = add_zero(str(subrip_time.hours))
     minutes = add_zero(str(subrip_time.minutes))
     seconds = add_zero(str(subrip_time.seconds))
-    time_string = "{}:{}:{}".format(hours, minutes, seconds)
+    time_string = f"{hours}:{minutes}:{seconds}"
 
     return time_string
 
 def reply_post(post, msg):
 
     post.reply(msg)
-    print("Sent the reply! Will be waiting!!!\n\n\n")
     time.sleep(60)
 
 
@@ -74,31 +75,24 @@ def parse_url(post):
     pattern = re.compile(".(jpe?g|png|gifv?)(\?\S*)?")
 
     if pattern.search(post.url) is not None:
-        print("\tMatched the pattern, it has our content.")
         return True
     else:
         return False
         
-def search_quote(formatted_text, submission):
+def search_quote(formatted_text, submission, table_data):
     # I will add some comments, 'cause 
     for filename in glob.glob(subs_dir + "*.srt"):
-        print(filename)
+    #    print(filename)
         
         subs = pysrt.open(filename)
 
-        for i in range(len(formatted_text)):
-                
+        for found_word in formatted_text:
             for quote in subs:
                 quote_text = quote.text
                 quote_text = replace_chars(quote_text).lower()
                 quote_text = quote_text.replace("\n","")
                 
-                if formatted_text[i] in quote_text:
-                    print("Found it!\n")
-                    print(quote.text)
-                    print(quote.start)
-                    print(quote.end) 
-
+                if found_word in quote_text:
                     citation = quote.text.replace("\n", " ")
                     movie = filename.replace("_", " ").replace(".srt", "").replace(subs_dir, "")
                     start = riptime(quote.start)
@@ -109,67 +103,70 @@ def search_quote(formatted_text, submission):
                                            start,
                                            end
                     )
-                    print(reply)
+                    table_data[4] = citation
+                    print(table(table_data))
                     reply_post(submission, reply)
                     return
+    print(table(table_data))
+
                     
 def submission_thread():
-    
+    counter = 0
     for submission in subreddit.stream.submissions():
-        
+        table_data = ["None"] * 6
+
         post = reddit.submission(submission)
+        print("\nStarting a new submission...")
+        table_data[0] = counter
+        table_data[1] = post.id
         
-        print("[{}]Parsing post -> {}\n".format(counter, post.id))
+        counter+=1
 
         if (parse_url(post)):
             try:
                 recog_text = text_recognition(post).decode("utf-8").lower()
+                table_data[2] = "Yes"
             except Exception as e:
-                print("Failed at reading text. Skipping...\n\n{}".format(e))
+                table_data[5] = e
+                print(table(table_data))
                 continue
         else:
-            print("It is not an image. Skipping..\n\n.")
+            table_data[2] = "No"
+            print(table(table_data))
             continue
             
         # Don't get scared from the for loops below
         # They are really small and thus fast
         
-        formatted_text = replace_chars(recog_text).lower()
-        formatted_text = formatted_text.split()
-        formatted_text = formatted_text[::-1]
-        formatted_text = [i for i in formatted_text if len(i) > 8]
-        formatted_text = list(filter(lambda x: not x in banlist, formatted_text))
-        
-        print(formatted_text)
+        formatted_text = (replace_chars(recog_text).lower().split())[::-1]
+        formatted_text = [i for i in formatted_text if len(i) > 8 and not i in banlist]
+
+        table_data[3] = formatted_text
 
         # If the list is empty, no need for scanning
         if (len(formatted_text) == 0):
+            table_data[3] = "Empty"
+            print(table(table_data))
             continue
         
         # If the main procedure fails, maybe internet connection is down
         # Just wait it out
-        try: 
-            search_quote(formatted_text, len(formatted_text), submission)
+        try:
+            search_quote(formatted_text, submission, table_data)
         except Exception as e:
-            print("Error occured: {}\n".format(e))
+            table_data[5] = e
+            print(table(table_data))
             continue
-        
-        counter+=1
-
-def comment_thread():
-    for comment in subreddit.stream.comments:
-        pass
             
 def save_karma():
-    memepolice = reddit.redditor("prequelmemes_bot")
+    memepolice = reddit.redditor(bot_name)
     while True:
         for comment in memepolice.comments.new(limit=100):
             # It will parse 100 comments in 5-6 seconds
             if comment.ups < -2:
                 comment.delete()
 
-        # 1 hour of sleep
-        time.sleep(3600)
+        time.sleep(1800)
                         
 def threads():
     Thread(name="Submissions", target=submission_thread).start()
