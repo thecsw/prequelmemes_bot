@@ -30,7 +30,7 @@ sudo pip install Pillow
 OR
 
 #+BEGIN_SRC screen
-pip install --upgrade -r requirements.txt
+sudo pip3 install --upgrade -r requirements.txt
 #+END_SRC
 1. [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
    connect to Reddit's API and extract desired data.
@@ -93,7 +93,7 @@ Remove the word **'example'** from the title of all files with it.
 Just run this
 
 #+BEGIN_SRC screen
-python main.py
+python3 main.py
 #+END_SRC
 
 That is everything. All the prequelmemes will be identified. Once and for all,
