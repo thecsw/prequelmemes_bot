@@ -3,6 +3,9 @@
 *~
 config.py
 
+logs.txt
+counter.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
