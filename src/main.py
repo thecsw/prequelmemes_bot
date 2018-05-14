@@ -25,6 +25,7 @@ import pysrt
 from text_recognition import text_recognition
 from banlist import banlist
 from table import table
+from utils import *
 from message import *
 import config
 
@@ -46,13 +47,16 @@ subreddit = reddit.subreddit(subreddit_name)
 
 subs_dir = "./subtitles/"
 
+counter_file = "./data/counter.txt"
+logs_file = "./data/logs.txt"
+
 def add_zero(string):
-    if (len(string)==1):
+    if (len(string) == 1):
         string = f"0{string}"
+
     return string
 
 def riptime(subrip_time):
-
     hours = add_zero(str(subrip_time.hours))
     minutes = add_zero(str(subrip_time.minutes))
     seconds = add_zero(str(subrip_time.seconds))
@@ -61,14 +65,17 @@ def riptime(subrip_time):
     return time_string
 
 def reply_post(post, msg):
-
     post.reply(msg)
     time.sleep(60)
 
-
 def replace_chars(text):
     text = re.sub('[^a-zA-Z0-9\n]+', '', text)
+
     return text
+
+def finish_entry(td):
+    print(table(td))
+    append_file(logs_file, f"{table(td)}\n\n")
 
 def parse_url(post):
 
@@ -80,9 +87,8 @@ def parse_url(post):
         return False
         
 def search_quote(formatted_text, submission, table_data):
-    # I will add some comments, 'cause 
+
     for filename in glob.glob(subs_dir + "*.srt"):
-    #    print(filename)
         
         subs = pysrt.open(filename)
 
@@ -104,14 +110,14 @@ def search_quote(formatted_text, submission, table_data):
                                            end
                     )
                     table_data[4] = citation
-                    print(table(table_data))
+                    finish_entry(table_data)
                     reply_post(submission, reply)
                     return
-    print(table(table_data))
 
+    finish_entry(table_data)
                     
 def submission_thread():
-    counter = 0
+    counter = (float(read_counter(counter_file)))
     for submission in subreddit.stream.submissions():
         table_data = ["None"] * 6
 
@@ -121,18 +127,18 @@ def submission_thread():
         table_data[1] = post.id
         
         counter+=1
-
+        write_file(counter_file, counter)
         if (parse_url(post)):
             try:
                 recog_text = text_recognition(post).decode("utf-8").lower()
                 table_data[2] = "Yes"
             except Exception as e:
                 table_data[5] = e
-                print(table(table_data))
+                finish_entry(table_data)
                 continue
         else:
             table_data[2] = "No"
-            print(table(table_data))
+            finish_entry(table_data)
             continue
             
         # Don't get scared from the for loops below
@@ -146,7 +152,7 @@ def submission_thread():
         # If the list is empty, no need for scanning
         if (len(formatted_text) == 0):
             table_data[3] = "Empty"
-            print(table(table_data))
+            finish_entry(table_data)
             continue
         
         # If the main procedure fails, maybe internet connection is down
@@ -155,7 +161,7 @@ def submission_thread():
             search_quote(formatted_text, submission, table_data)
         except Exception as e:
             table_data[5] = e
-            print(table(table_data))
+            finish_entry(table_data)
             continue
             
 def save_karma():
