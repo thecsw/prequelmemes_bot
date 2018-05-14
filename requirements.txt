@@ -1,7 +1,6 @@
 praw
 tesseract-ocr
 pytesseract
-opencv-python
 Pillow
 pysrt
 tabulate
