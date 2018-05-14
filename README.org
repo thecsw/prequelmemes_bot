@@ -20,11 +20,11 @@ how to deploy the project on a live system.
 *** Prerequisites
 
 #+BEGIN_SRC screen
-sudo pip install praw
-sudo pip install python-opencv
-sudo pip install pytesseract
-sudo pip install tesseract-ocr
-sudo pip install Pillow
+sudo pip3 install praw
+sudo pip3 install pytesseract
+sudo pip3 install tesseract-ocr
+sudo pip3 install Pillow
+sudo pip3 install tabulate
 #+END_SRC
 
 OR
@@ -38,6 +38,9 @@ sudo pip3 install --upgrade -r requirements.txt
 3. [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
 4. [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
 5. [[https://pypi.org/project/tabulate/][tabulate]] is a pretty-print tabular data in Python, a library and a command-line utility
+
+Btw, each distro has its own kinks with python-opencv. Google on how to install
+it on your environment.
 
 *** Other Dependencies
 
