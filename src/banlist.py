@@ -1,1 +1,1 @@
-banlist = "anakinskywalkergeneralgrievousgeneralkenobimasterwinduthesenatepadmewrittenanddirectedbygeorgelucas"
+banlist = "anakinskywalkergeneralgrievousgeneralobiwankenobimasterwinduthesenatepadmewrittenanddirectedbygeorgelucas"
