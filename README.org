@@ -1,6 +1,7 @@
 #+TITLE: u/prequelmemes_bot Documentation
 #+AUTHOR: thecsw
-\newpage
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
+
 *Hello there!*
 
 Welcome to the source page of u/prequelmemes_bot! Nice to meet you. First of
