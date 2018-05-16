@@ -117,7 +117,7 @@ def search_quote(formatted_text, submission, table_data):
     finish_entry(table_data)
                     
 def submission_thread():
-    counter = (float(read_counter(counter_file))) + 1
+    counter = (float(read_file(counter_file))) + 1
     for submission in subreddit.stream.submissions():
         table_data = ["None"] * 6
 

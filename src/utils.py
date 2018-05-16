@@ -13,7 +13,7 @@ def append_file(file_name, data):
         a.write(str(data))
     a.close
 
-def read_counter(file_name):
+def read_file(file_name):
     with open(file_name, "r") as r:
         data = r.read()
     r.close()
