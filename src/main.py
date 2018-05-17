@@ -6,7 +6,7 @@
 | |_) | | |  __/ (_| | |_| |  __/ | | | | | |  __/ | | | | |  __/\__ \
 | .__/|_|  \___|\__, |\__,_|\___|_|_| |_| |_|\___|_| |_| |_|\___||___/
 |_|                |_|                                                
-                                                                                                                                                  
+
 """
 # All the necessary imports
 
@@ -97,8 +97,10 @@ def search_quote(formatted_text, submission, table_data):
                 quote_text = quote.text
                 quote_text = replace_chars(quote_text).lower()
                 quote_text = quote_text.replace("\n","")
-                
-                if found_word in quote_text:
+
+                # The reverse text memes are quite popular now.
+                # We can easily spot even the inverse quotes.
+                if (found_word in quote_text) or (found_word[::-1] in quote_text):
                     citation = quote.text.replace("\n", " ")
                     movie = filename.replace("_", " ").replace(".srt", "").replace(subs_dir, "")
                     start = riptime(quote.start)
