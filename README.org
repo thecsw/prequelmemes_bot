@@ -1,6 +1,7 @@
 #+TITLE: u/prequelmemes_bot Documentation
 #+AUTHOR: thecsw
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://gongzhitaao.org/orgcss/org.css"/>
+#+DATE: <2018-05-17 Thu>
 
 *Hello there!*
 
@@ -20,7 +21,7 @@ how to deploy the project on a live system.
 
 *** Prerequisites
 
-#+BEGIN_SRC screen
+#+BEGIN_SRC shell
 sudo pip3 install praw
 sudo pip3 install pytesseract
 sudo pip3 install tesseract-ocr
@@ -30,7 +31,7 @@ sudo pip3 install tabulate
 
 OR
 
-#+BEGIN_SRC screen
+#+BEGIN_SRC shell
 sudo pip3 install --upgrade -r requirements.txt
 #+END_SRC
 1. [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
@@ -56,24 +57,24 @@ tesseract's official
 
 ***** Debian, Ubuntu (aptitude)
 
-#+BEGIN_SRC screen
+#+BEGIN_SRC shell
 sudo apt-get install tesseract-ocr
 sudo apt-get install tesseract-ocr-eng
 #+END_SRC
 
 ***** Arch Linux (pacman)
 
-#+BEGIN_SRC screen
+#+BEGIN_SRC shell
 sudo pacman -S tesseract
 sudo pacman -S tesseract-data-eng
 #+END_SRC
 
 **** Mac OS (homebrew)
-#+BEGIN_SRC screen
+#+BEGIN_SRC shell
 brew install tesseract
 #+END_SRC
      
-** Installing
+** Installing and configuring
 
 The only thing that needs to be done before execution is the config. The only
 thing that needs to be done before execution is the config profile. In the
@@ -81,7 +82,7 @@ config profile you should fill your Reddit API details.
 
 For that please follow the steps below
 
-#+BEGIN_SRC screen
+#+BEGIN_SRC shell
 git clone https://github.com/thecsw/prequelmemes_bot
 cd prequelmemes_bot
 mv example.config.py config.py
@@ -96,7 +97,7 @@ Remove the word **'example'** from the title of all files with it.
 
 Just run this
 
-#+BEGIN_SRC screen
+#+BEGIN_SRC shell
 python3 main.py
 #+END_SRC
 
@@ -131,11 +132,7 @@ free time, try to add/fix the following todo items or add your own with the
 issues tab or push.
 
 *** TODO:
-
-**** TODO [#A] Edit the mesage body text.
-The message body text isn't perfect. It can be more prequelmemed. So yeah, if
-somebody can do it, that would be awesome.
-
+    
 **** TODO [#B] Make some general fixes to the code. 
 Add some little new features, replace old ones with new ones. Make a faster
 version. Just a general quality assurance.
@@ -145,6 +142,11 @@ I don't have an idea of what to do. I made some prototypes, don't know. If the
 bot is going to answer to each comment, that is just a spam.
 
 *** DONE:
+
+**** DONE [#A] Edit the mesage body text.
+    CLOSED: [2018-05-17 Thu 21:28]
+The message body text isn't perfect. It can be more prequelmemed. So yeah, if
+somebody can do it, that would be awesome.
 
 **** DONE [#A] Port the code to python3.6+
      CLOSED: [2018-05-13 Sun 18:27]
