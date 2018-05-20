@@ -6,7 +6,7 @@ The line "*%CITATION%*" is from **"%MOVIE%"**.
 
 The ~~fun~~ line begins at %START% and finishes at %END%.
 ___________________________
-^(I am a simple bot trying to make my way in the universe. Go to my source code and push!)
+^(I'm just a simple bot trying to make my way in the universe. Go to my source code and push!)
 
 [Source code](https://github.com/thecsw/prequelmemes_bot)
 """
