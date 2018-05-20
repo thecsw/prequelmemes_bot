@@ -49,6 +49,11 @@ subs_dir = "./subtitles/"
 
 counter_file = "./data/counter.txt"
 logs_file = "./data/logs.txt"
+checked_file = "./data/checked.txt"
+
+# Just to stop double, triple, QUADRIPLE posting
+# An array of checked posts
+checked = read_array(checked_file)
 
 def add_zero(string):
     if (len(string) == 1):
@@ -113,7 +118,7 @@ def search_quote(formatted_text, submission, table_data):
                     )
                     table_data[4] = citation
                     finish_entry(table_data)
-                    reply_post(submission, reply)
+#                    reply_post(submission, reply)
                     return
 
     finish_entry(table_data)
@@ -124,7 +129,12 @@ def submission_thread():
         table_data = ["None"] * 6
 
         post = reddit.submission(submission)
+        if post.id in checked:
+            continue
+        checked.append(post.id)
+        write_array(checked_file, checked)
         print("\nStarting a new submission...")
+        
         table_data[0] = counter
         table_data[1] = post.id
         
