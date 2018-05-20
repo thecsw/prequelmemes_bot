@@ -118,7 +118,7 @@ def search_quote(formatted_text, submission, table_data):
                     )
                     table_data[4] = citation
                     finish_entry(table_data)
-#                    reply_post(submission, reply)
+                    reply_post(submission, reply)
                     return
 
     finish_entry(table_data)
