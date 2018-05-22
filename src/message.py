@@ -8,7 +8,7 @@ The ~~fun~~ line begins at %START% and finishes at %END%.
 ___________________________
 ^(I'm just a simple bot trying to make my way in the universe. Go to my source code and push!)
 
-[Source code](https://github.com/thecsw/prequelmemes_bot)
+[Source code](https://github.com/thecsw/memeinvestor_bot)
 """
 
 summon_message = """
@@ -22,7 +22,7 @@ I was summoned by %USERNAME%. If I am wrong, blame it on him!
 ___________________________
 ^(I am a small bot. Still need improving. Want to check out? Go to my source code and commit!)
 
-[Source code](https://github.com/thecsw/prequelmemes_bot)
+[Source code](https://github.com/thecsw/memeinvestor_bot)
 """
 
 def modify_message(quote, movie, start, end):
