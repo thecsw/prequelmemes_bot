@@ -4,16 +4,19 @@ import pytesseract
 import cv2
 from PIL import Image
 
-def text_recognition(post):
+def extract_image(post):
     meme_name = "temp"          # We would just call all the temporary images as "temp"
-
-    # For some reason different distros behave differently with urllib
-    # Arch linux uses urllib.request.urlretrieve()
-    # Debian and Ubuntu distros use urllib.urlretrieve
     try:
         urllib.urlretrieve(post.url, filename=meme_name) # Here we are downloading the appropriate image (png, jpg, jpeg, bmp)
     except:
         urllib.request.urlretrieve(post.url, filename=meme_name)
+    return meme_name
+        
+def text_recognition(image_name):
+
+    # For some reason different distros behave differently with urllib
+    # Arch linux uses urllib.request.urlretrieve()
+    # Debian and Ubuntu distros use urllib.urlretrieve
         
     image = cv2.imread(meme_name)                    # We load up the image using opencv
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # Turning the image to grayscale

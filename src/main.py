@@ -142,7 +142,7 @@ def submission_thread():
         write_file(counter_file, counter)
         if (parse_url(post)):
             try:
-                recog_text = text_recognition(post).decode("utf-8").lower()
+                recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
                 table_data[2] = "Yes"
             except Exception as e:
                 table_data[5] = e
