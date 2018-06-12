@@ -12,7 +12,7 @@ def extract_image(post):
         urllib.request.urlretrieve(post.url, filename=meme_name)
     return meme_name
         
-def text_recognition(image_name):
+def text_recognition(meme_name):
 
     # For some reason different distros behave differently with urllib
     # Arch linux uses urllib.request.urlretrieve()
