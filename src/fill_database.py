@@ -1,5 +1,4 @@
 
-
 """                              _                                    
  _ __  _ __ ___  __ _ _   _  ___| |_ __ ___   ___ _ __ ___   ___  ___ 
 | '_ \| '__/ _ \/ _` | | | |/ _ \ | '_ ` _ \ / _ \ '_ ` _ \ / _ \/ __|
@@ -19,15 +18,17 @@ import glob
 
 import praw
 import pysrt
+from tqdm import tqdm, TqdmSynchronisationWarning
+import warnings
 
 # Our own scripts
 
-from text_recognition import text_recognition
+from text_recognition import text_recognition, extract_image
 from banlist import banlist
-from table import table
 from utils import *
 from message import *
 import config
+import database
 
 reddit = praw.Reddit(client_id=config.client_id,
                      client_secret=config.client_secret,
@@ -47,8 +48,6 @@ subreddit = reddit.subreddit(subreddit_name)
 
 subs_dir = "./subtitles/"
 
-counter_file = "./data/counter.txt"
-logs_file = "./data/logs.txt"
 checked_file = "./data/checked.txt"
 
 # Just to stop double, triple, QUADRIPLE posting
@@ -69,10 +68,6 @@ def riptime(subrip_time):
 
     return time_string
 
-def reply_post(post, msg):
-    post.reply(msg)
-    time.sleep(60)
-
 def replace_chars(text):
     text = re.sub('[^a-zA-Z0-9\n]+', '', text)
 
@@ -91,7 +86,7 @@ def parse_url(post):
     else:
         return False
         
-def search_quote(formatted_text, submission, table_data):
+def search_quote(formatted_text, submission):
 
     for filename in glob.glob(subs_dir + "*.srt"):
         
@@ -116,79 +111,51 @@ def search_quote(formatted_text, submission, table_data):
                                            start,
                                            end
                     )
-                    table_data[4] = citation
-                    finish_entry(table_data)
-                    reply_post(submission, reply)
+                    database.insert(submission.id, Quote=citation)
                     return
 
-    finish_entry(table_data)
-                    
+    database.insert(submission.id)
+
 def submission_thread():
-    counter = (float(read_file(counter_file))) + 1
-    for submission in subreddit.stream.submissions():
-        table_data = ["None"] * 6
 
-        post = reddit.submission(submission)
-        if post.id in checked:
-            continue
-        checked.append(post.id)
-        write_array(checked_file, checked)
-        print("\nStarting a new submission...")
-        
-        table_data[0] = counter
-        table_data[1] = post.id
-        
-        counter+=1
-        write_file(counter_file, counter)
-        if (parse_url(post)):
-            try:
-                recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
-                table_data[2] = "Yes"
-            except Exception as e:
-                table_data[5] = e
-                finish_entry(table_data)
+    database.init_database()
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", TqdmSynchronisationWarning)
+        for submission in tqdm(checked):
+            post = reddit.submission(submission)
+            
+            if (parse_url(post)):
+                try:
+                    recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
+                except Exception as e:
+                    database.insert(post.id)
+                    continue
+            else:
+                database.insert(post.id)
                 continue
-        else:
-            table_data[2] = "No"
-            finish_entry(table_data)
-            continue
+                
+            # Don't get scared from the for loops below
+            # They are really small and thus fast
             
-        # Don't get scared from the for loops below
-        # They are really small and thus fast
-        
-        formatted_text = (replace_chars(recog_text).lower().split())[::-1]
-        formatted_text = [i for i in formatted_text if len(i) > 8 and not i in banlist]
-
-        table_data[3] = formatted_text
-
-        # If the list is empty, no need for scanning
-        if (len(formatted_text) == 0):
-            table_data[3] = "Empty"
-            finish_entry(table_data)
-            continue
-        
-        # If the main procedure fails, maybe internet connection is down
-        # Just wait it out
-        try:
-            search_quote(formatted_text, submission, table_data)
-        except Exception as e:
-            table_data[5] = e
-            finish_entry(table_data)
-            continue
+            formatted_text = (replace_chars(recog_text).lower().split())[::-1]
+            formatted_text = [i for i in formatted_text if len(i) > 8 and not i in banlist]
             
-def save_karma():
-    memepolice = reddit.redditor(bot_name)
-    while True:
-        for comment in memepolice.comments.new(limit=100):
-            # It will parse 100 comments in 5-6 seconds
-            if comment.ups < -2:
-                comment.delete()
-
-        time.sleep(1800)
+            # If the list is empty, no need for scanning
+            if (len(formatted_text) == 0):
+                database.insert(post.id)
+                continue
+            
+            # If the main procedure fails, maybe internet connection is down
+            # Just wait it out
+            try:
+                search_quote(formatted_text, post)
+            except Exception as e:
+                database.insert(post.id)
+                continue
                         
 def threads():
     Thread(name="Submissions", target=submission_thread).start()
-    Thread(name="Save Karma", target=save_karma).start()
 
 if __name__ == "__main__":
     threads()
