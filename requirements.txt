@@ -3,3 +3,4 @@ tesseract-ocr
 pytesseract
 Pillow
 pysrt
+opencv-python
