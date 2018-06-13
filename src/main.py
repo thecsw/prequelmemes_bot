@@ -105,12 +105,15 @@ def search_quote(formatted_text, submission, table_data):
                     start = riptime(quote.start)
                     end = riptime(quote.end)
 
+                    referenced_times = database.find_quote(citation)
+                    
                     reply = modify_message(citation,
                                            movie,
                                            start,
-                                           end
+                                           end,
+                                           referenced_times
                     )
-#                    reply_post(submission, reply)
+                    reply_post(submission, reply)
                     database.update_post(submission.id, citation)
                     return
                     

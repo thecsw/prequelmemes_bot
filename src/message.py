@@ -5,11 +5,22 @@ message = """
 The line "*%CITATION%*" is from **"%MOVIE%"**.
 
 The ~~fun~~ line begins at %START% and finishes at %END%.
+
+This line has been references %NUMBER% time(s).
 ___________________________
 ^(I'm just a simple bot trying to make my way in the universe. Go to my source code and push!)
 
 [Source code](https://github.com/thecsw/prequelmemes_bot)
 """
+
+def modify_message(quote, movie, start, end, times):    
+    reply = message
+    reply = reply.replace("%CITATION%", quote)
+    reply = reply.replace("%START%", start)
+    reply = reply.replace("%END%", end)
+    reply = reply.replace("%MOVIE%", movie)
+    reply = reply.replace("%NUMBER%", times)
+    return reply
 
 summon_message = """
 **Hello there!**
@@ -25,22 +36,9 @@ ___________________________
 [Source code](https://github.com/thecsw/prequelmemes_bot)
 """
 
-def modify_message(quote, movie, start, end):
-    
-    reply = message
-    reply = reply.replace("%CITATION%", quote)
-    reply = reply.replace("%START%", start)
-    reply = reply.replace("%END%", end)
-    reply = reply.replace("%MOVIE%", movie)
-
-    return reply
-
-
 def modify_summon_message(quote, movie, user):
-    
     reply = summon_message
     reply = reply.replace("%CITATION%", quote)
     reply = reply.replace("%MOVIE%", movie)
-    reply = reply.replace("%USERNAME%", user)
-    
+    reply = reply.replace("%USERNAME%", user)    
     return reply

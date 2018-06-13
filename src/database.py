@@ -67,3 +67,17 @@ def get_done():
     c.close()
     conn.close()
     return result
+
+def find_quote(quote):
+    conn = sqlite3.connect("preq.db")
+    c = conn.cursor()
+    args = c.execute("""
+    SELECT COUNT(*) FROM Submissions 
+    WHERE Quote = ?;
+    """, (quote, ))
+    result = list(args.fetchone())[0]
+    conn.commit()
+    c.close()
+    conn.close()
+    return result
+    
