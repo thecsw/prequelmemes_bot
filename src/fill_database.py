@@ -119,19 +119,26 @@ def search_quote(formatted_text, submission):
 def submission_thread():
 
     database.init_database()
-
+    i = 0
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", TqdmSynchronisationWarning)
         for submission in tqdm(checked):
+            i += 1
+            if (i < 9517):
+                continue
             post = reddit.submission(submission)
-            
-            if (parse_url(post)):
-                try:
-                    recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
-                except Exception as e:
+
+            try:
+                if (parse_url(post)):
+                    try:
+                        recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
+                    except Exception as e:
+                        database.insert(post.id)
+                        continue
+                else:
                     database.insert(post.id)
                     continue
-            else:
+            except:
                 database.insert(post.id)
                 continue
                 
