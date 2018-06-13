@@ -3,4 +3,3 @@ tesseract-ocr
 pytesseract
 Pillow
 pysrt
-tabulate
