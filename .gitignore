@@ -6,6 +6,9 @@ config.py
 logs.txt
 counter.txt
 
+# Our SQLite database 
+preq.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

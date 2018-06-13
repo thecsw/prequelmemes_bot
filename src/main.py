@@ -1,5 +1,4 @@
 
-
 """                              _                                    
  _ __  _ __ ___  __ _ _   _  ___| |_ __ ___   ___ _ __ ___   ___  ___ 
 | '_ \| '__/ _ \/ _` | | | |/ _ \ | '_ ` _ \ / _ \ '_ ` _ \ / _ \/ __|
@@ -22,10 +21,9 @@ import pysrt
 
 # Our own scripts
 
-from text_recognition import text_recognition
+from text_recognition import text_recognition, extract_image
 from banlist import banlist
-from table import table
-from utils import *
+import database
 from message import *
 import config
 
@@ -46,14 +44,6 @@ subreddit = reddit.subreddit(subreddit_name)
 # Feel free to use it
 
 subs_dir = "./subtitles/"
-
-counter_file = "./data/counter.txt"
-logs_file = "./data/logs.txt"
-checked_file = "./data/checked.txt"
-
-# Just to stop double, triple, QUADRIPLE posting
-# An array of checked posts
-checked = read_array(checked_file)
 
 def add_zero(string):
     if (len(string) == 1):
@@ -90,7 +80,11 @@ def parse_url(post):
         return True
     else:
         return False
-        
+
+def show_out():
+    latest = database.get_done()
+    print(f"Submission ID -> {latest[0]}\nText -> {latest[1]}\n")
+    
 def search_quote(formatted_text, submission, table_data):
 
     for filename in glob.glob(subs_dir + "*.srt"):
@@ -116,41 +110,28 @@ def search_quote(formatted_text, submission, table_data):
                                            start,
                                            end
                     )
-                    table_data[4] = citation
-                    finish_entry(table_data)
-                    reply_post(submission, reply)
+#                    reply_post(submission, reply)
+                    database.update_post(submission.id, citation)
                     return
-
-    finish_entry(table_data)
                     
 def submission_thread():
-    counter = (float(read_file(counter_file))) + 1
     for submission in subreddit.stream.submissions():
-        table_data = ["None"] * 6
-
         post = reddit.submission(submission)
-        if post.id in checked:
+        post_ID = post.id
+        latest_posts = database.get_latest()
+        if (post_ID in latest_posts):
             continue
-        checked.append(post.id)
-        write_array(checked_file, checked)
-        print("\nStarting a new submission...")
-        
-        table_data[0] = counter
-        table_data[1] = post.id
-        
-        counter+=1
-        write_file(counter_file, counter)
+        database.insert(post_ID)
+        print("\nStarting a new submission...\n")
+
         if (parse_url(post)):
             try:
                 recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
-                table_data[2] = "Yes"
             except Exception as e:
-                table_data[5] = e
-                finish_entry(table_data)
+                show_out()
                 continue
         else:
-            table_data[2] = "No"
-            finish_entry(table_data)
+            show_out()
             continue
             
         # Don't get scared from the for loops below
@@ -159,22 +140,20 @@ def submission_thread():
         formatted_text = (replace_chars(recog_text).lower().split())[::-1]
         formatted_text = [i for i in formatted_text if len(i) > 8 and not i in banlist]
 
-        table_data[3] = formatted_text
-
         # If the list is empty, no need for scanning
         if (len(formatted_text) == 0):
-            table_data[3] = "Empty"
-            finish_entry(table_data)
+            show_out()
             continue
         
         # If the main procedure fails, maybe internet connection is down
         # Just wait it out
         try:
             search_quote(formatted_text, submission, table_data)
+            show_out()
         except Exception as e:
-            table_data[5] = e
-            finish_entry(table_data)
+            show_out()
             continue
+
             
 def save_karma():
     memepolice = reddit.redditor(bot_name)
