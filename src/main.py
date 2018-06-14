@@ -71,10 +71,6 @@ def replace_chars(text):
 
     return text
 
-def finish_entry(td):
-    print(table(td))
-    append_file(logs_file, f"{table(td)}\n\n")
-
 def parse_url(post):
 
     pattern = re.compile(".(jpe?g|png|gifv?)(\?\S*)?")
