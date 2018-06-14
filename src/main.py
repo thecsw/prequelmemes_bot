@@ -124,7 +124,7 @@ def submission_thread():
         if (post_ID in latest_posts):
             continue
         database.insert(post_ID)
-        print("\nStarting a new submission...\n")
+        logging.info("\nStarting a new submission...\n")
 
         if (parse_url(post)):
             try:
