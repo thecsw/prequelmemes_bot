@@ -13,6 +13,7 @@ import os, sys, time
 from threading import Thread
 import re
 import glob
+import logging
 
 # Separate pip modules/packages
 
@@ -32,6 +33,8 @@ reddit = praw.Reddit(client_id=config.client_id,
                      username=config.username,
                      password=config.password,
                      user_agent=config.user_agent)
+
+logging.basicConfig(level=logging.INFO)
 
 subreddit_name = "prequelmemes"
 bot_name = f"{subreddit_name}_bot"
@@ -83,7 +86,7 @@ def parse_url(post):
 
 def show_out():
     latest = database.get_done()
-    print(f"Submission ID -> {latest[0]}\nText -> {latest[1]}\n")
+    logging.info(f"Submission ID -> {latest[0]}\nText -> {latest[1]}\n")
     
 def search_quote(formatted_text, submission, table_data):
 
@@ -113,7 +116,7 @@ def search_quote(formatted_text, submission, table_data):
                                            end,
                                            referenced_times
                     )
-                    reply_post(submission, reply)
+#                    reply_post(submission, reply)
                     database.update_post(submission.id, citation)
                     return
                     
