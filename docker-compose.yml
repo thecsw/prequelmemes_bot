@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  
+  prequelbot:
+    build: .
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - prequel_db
+
+  prequel_db:
+    image: postgres:latest
+    env_file: .env
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:latest
+    restart: unless-stopped
+    ports:
+     - 8080:8080
