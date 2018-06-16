@@ -3,6 +3,9 @@
 *~
 config.py
 
+# SQL dump table
+Submissions.sql
+
 # Old txt files
 logs.txt
 counter.txt
