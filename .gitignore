@@ -3,8 +3,12 @@
 *~
 config.py
 
+# Old txt files
 logs.txt
 counter.txt
+
+# Our main .env
+.env
 
 # Our SQLite database 
 preq.db
