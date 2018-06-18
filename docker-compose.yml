@@ -17,7 +17,7 @@ services:
     depends_on:
       -prequel_db
 
-  prequelmemes_bot:
+  app:
     build: .
     env_file: .env
     restart: unless-stopped
