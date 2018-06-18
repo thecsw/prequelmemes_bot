@@ -1,4 +1,4 @@
-
+[B]
 """                              _                                    
  _ __  _ __ ___  __ _ _   _  ___| |_ __ ___   ___ _ __ ___   ___  ___ 
 | '_ \| '__/ _ \/ _` | | | |/ _ \ | '_ ` _ \ / _ \ '_ ` _ \ / _ \/ __|
@@ -36,8 +36,8 @@ reddit = praw.Reddit(client_id=config.client_id,
 
 logging.basicConfig(level=logging.INFO)
 
-subreddit_name = "prequelmemes"
-bot_name = f"{subreddit_name}_bot"
+subreddit_name = config.subreddit
+bot_name = config.username
 
 subreddit = reddit.subreddit(subreddit_name)
 
@@ -46,7 +46,7 @@ subreddit = reddit.subreddit(subreddit_name)
 # I created this subreddit just for personal testings
 # Feel free to use it
 
-subs_dir = "./subtitles/"
+subs_dir = config.subs_folder
 
 def add_zero(string):
     if (len(string) == 1):
@@ -84,7 +84,7 @@ def show_out():
     latest = database.get_done()
     logging.info(f"Submission ID -> {latest[0]}\nText -> {latest[1]}\n")
     
-def search_quote(formatted_text, submission, table_data):
+def search_quote(formatted_text):
 
     for filename in glob.glob(subs_dir + "*.srt"):
         
@@ -92,10 +92,9 @@ def search_quote(formatted_text, submission, table_data):
 
         for found_word in formatted_text:
             for quote in subs:
-                quote_text = quote.text
-                quote_text = replace_chars(quote_text).lower()
+                quote_text = replace_chars(quote.text).lower()
                 quote_text = quote_text.replace("\n","")
-
+                
                 # The reverse text memes are quite popular now.
                 # We can easily spot even the inverse quotes.
                 if (found_word in quote_text) or (found_word[::-1] in quote_text):
@@ -112,9 +111,8 @@ def search_quote(formatted_text, submission, table_data):
                                            end,
                                            referenced_times
                     )
-#                    reply_post(submission, reply)
-                    database.update_post(submission.id, citation)
-                    return
+                    return citation
+    return False
                     
 def submission_thread():
     for submission in subreddit.stream.submissions():
@@ -149,12 +147,11 @@ def submission_thread():
         
         # If the main procedure fails, maybe internet connection is down
         # Just wait it out
-        try:
-            search_quote(formatted_text, submission, table_data)
-            show_out()
-        except Exception as e:
-            show_out()
-            continue
+
+        logging.info(f"Citation: {formatted_text}")
+
+        search_quote(formatted_text)
+        show_out()
 
             
 def save_karma():
@@ -162,7 +159,7 @@ def save_karma():
     while True:
         for comment in memepolice.comments.new(limit=100):
             # It will parse 100 comments in 5-6 seconds
-            if comment.ups < -2:
+            if (comment.ups < -2):
                 comment.delete()
 
         time.sleep(1800)

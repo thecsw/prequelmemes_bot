@@ -10,6 +10,9 @@ user_agent = os.getenv("BOT_USER_AGENT")
 # Subreddit name
 subreddit = os.getenv("SUBREDDIT")
 
+# Subtitles folder
+subs_folder = os.getenv("SUBS_FOLDER")
+
 # This is for postgres server
 db_host = os.getenv("POSTGRES_HOST")
 db_port = os.getenv("POSTGRES_PORT")
