@@ -24,6 +24,7 @@ import pysrt
 
 from text_recognition import text_recognition, extract_image
 from banlist import banlist
+import signal_handler
 import database
 from message import *
 import config
@@ -83,6 +84,9 @@ def parse_url(post):
 def show_out():
     latest = database.get_done()
     logging.info(f"Submission ID -> {latest[0]}\nText -> {latest[1]}\n")
+
+def validate(found_quote):
+    
     
 def search_quote(formatted_text):
 
@@ -115,6 +119,9 @@ def search_quote(formatted_text):
     return False
                     
 def submission_thread():
+
+    killer = signal_handler.GracefulKiller
+    
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
         post_ID = post.id
@@ -144,15 +151,14 @@ def submission_thread():
         if (len(formatted_text) == 0):
             show_out()
             continue
-        
-        # If the main procedure fails, maybe internet connection is down
-        # Just wait it out
 
         logging.info(f"Citation: {formatted_text}")
 
         search_quote(formatted_text)
         show_out()
-
+        
+        if (killer.kill_now):
+            exit("Received a termination signal. Bailing out.")
             
 def save_karma():
     memepolice = reddit.redditor(bot_name)
