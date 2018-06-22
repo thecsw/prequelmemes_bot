@@ -7742,7 +7742,3 @@ Peace!
 1655
 02:09:47,442 --> 02:09:48,932
 [Beeping]
-
-1655
-02:09:48,932 --> 03:09:48,932
-<font color=red><u>facebook.com/sazu489</u></font>

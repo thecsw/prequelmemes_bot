@@ -6531,9 +6531,3 @@ What is it they've sent us?
 1536
 02:05:33,052 --> 02:05:34,486
 Hope.
-
-1537
-02:05:34,586 --> 02:06:34,486
-<b><font color="#909090">^.^.^.^.subtitles by.^.^.^.^</font></b>
-<b><font color="#804040">ÃÂÃÂ®</font></b> <b><font color=#ff0000>Sud_Arun collections</font></b> <b><font color="#804040">ÃÂÃÂ®</font></b>
-
