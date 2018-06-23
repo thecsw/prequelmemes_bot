@@ -3,11 +3,11 @@ version: "3"
 services:
 
   postgres:
-  image: postgres:latest
-  env_file: .env
-  restart: unless-stopped
-  volumes:
-    - /data/prequelmemes_bot/postgres:/var/lib/postgres/data
+    image: postgres:latest
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - /data/prequelmemes_bot/postgres:/var/lib/postgres/data
 
   adminer:
     image: adminer:latest
@@ -15,7 +15,7 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      -prequel_db
+      - prequel_db
 
   app:
     build: .
