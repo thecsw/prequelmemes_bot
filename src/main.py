@@ -66,6 +66,7 @@ def riptime(subrip_time):
 
 def reply_post(post, msg):
     post.reply(msg)
+    logging.info("Reply sent!")
     time.sleep(10)
 
 def replace_chars(text):
@@ -174,12 +175,13 @@ def submission_thread():
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
         post_ID = post.id
+        logging.info(f"Starting new submission. {post_ID}")
         latest_posts = database.get_latest(conn)
 
         # If the post has been processed recently,
         # skip it then
         if (post_ID in latest_posts):
-            logging.info("The post already has been evaluated.")
+            logging.info("The post already has been evaluated.\n")
             continue
         
         formatted_text = validate_text(post)
@@ -195,6 +197,7 @@ def submission_thread():
             continue
 
         database.add_record(conn, post_ID, citation)
+        logging.info("Record has been added to the database.")
         show_out(conn)
 
         # If SIGINT or SIGTERM received, exit.
