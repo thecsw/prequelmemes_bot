@@ -1,4 +1,4 @@
-[B]
+
 """                              _                                    
  _ __  _ __ ___  __ _ _   _  ___| |_ __ ___   ___ _ __ ___   ___  ___ 
 | '_ \| '__/ _ \/ _` | | | |/ _ \ | '_ ` _ \ / _ \ '_ ` _ \ / _ \/ __|
@@ -35,7 +35,8 @@ reddit = praw.Reddit(client_id=config.client_id,
                      password=config.password,
                      user_agent=config.user_agent)
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO,
+                    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s)")
 
 subreddit_name = config.subreddit
 bot_name = config.username
@@ -65,7 +66,7 @@ def riptime(subrip_time):
 
 def reply_post(post, msg):
     post.reply(msg)
-    time.sleep(60)
+    time.sleep(10)
 
 def replace_chars(text):
     text = re.sub('[^a-zA-Z0-9\n]+', '', text)
@@ -82,14 +83,47 @@ def parse_url(post):
         return False
 
 def show_out():
-    latest = database.get_done()
-    logging.info(f"Submission ID -> {latest[0]}\nText -> {latest[1]}\n")
+    latest = database.get_done(conn)
+    logging.info(f"Submission ID -> {latest[0]}\nText -> {latest[1]}")
 
-def validate(found_quote):
-    
-    
-def search_quote(formatted_text):
+def validate_text(post):
 
+    """
+    This function is used to extract text from a post's image, filter it 
+    and return a list of found and acceptable strings. If any error has 
+    occured or the final list after filtering is empty, the function will
+    return False. If it returned False, no quote can be found.
+    """
+    
+    # Checks if it is possible to find text, if not, return False
+    if (parse_url(post)):
+        try:
+            recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
+        except Exception as e:
+            logging.error(f"Error occured. {e}")
+            return False
+    else:
+        logging.info(f"Image not found.")
+        return False
+
+    # Some text filterting.
+    formatted_text = (replace_chars(recog_text).lower().split())[::-1]
+    formatted_text = [i for i in formatted_text if len(i) > 8 and not i in banlist]
+
+    # If the list is empty, no need for scanning
+    if (len(formatted_text) == 0):
+        logging.info(f"No text found.")
+        return False
+    
+def search_quote(formatted_text, post):
+
+    """
+    This function receives a list of strings and tries to find them
+    in files from subtitles folder. On the first occurence, it will
+    reply to submissions and return found citation. If no citation 
+    found, the function just returns False.
+    """
+    
     for filename in glob.glob(subs_dir + "*.srt"):
         
         subs = pysrt.open(filename)
@@ -109,58 +143,78 @@ def search_quote(formatted_text):
 
                     referenced_times = database.find_quote(citation)
                     
-                    reply = modify_message(citation,
+                    reply_message = modify_message(citation,
                                            movie,
                                            start,
                                            end,
                                            referenced_times
                     )
+#                    reply_post(post, reply_message)
                     return citation
     return False
                     
 def submission_thread():
 
+    """
+    This is the main submission thread, it listens to all
+    new submissions in a subreddit, returns a post instance,
+    extract image and text, fills out the database. If SIGINT
+    or SIGTERM is received, the database connection will be
+    closed and the program will be gracefully killed.
+    """
+    
     killer = signal_handler.GracefulKiller
+    
+    conn = psycopg2.connect(dbname=config.db_name,
+                            user=config.db_user,
+                            password=config.db_pass,
+                            host=config.db_host,
+                            port=config.db_port)
     
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
         post_ID = post.id
-        latest_posts = database.get_latest()
+        latest_posts = database.get_latest(conn)
+
+        # If the post has been processed recently,
+        # skip it then
         if (post_ID in latest_posts):
+            logging.info("The post already has been evaluated.")
             continue
-        database.insert(post_ID)
-        logging.info("\nStarting a new submission...\n")
-
-        if (parse_url(post)):
-            try:
-                recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
-            except Exception as e:
-                show_out()
-                continue
-        else:
-            show_out()
-            continue
-            
-        # Don't get scared from the for loops below
-        # They are really small and thus fast
         
-        formatted_text = (replace_chars(recog_text).lower().split())[::-1]
-        formatted_text = [i for i in formatted_text if len(i) > 8 and not i in banlist]
-
-        # If the list is empty, no need for scanning
-        if (len(formatted_text) == 0):
-            show_out()
+        formatted_text = validate_text(post)
+        if (not formatted_text):
+            database.add_record(conn, post_ID)
+            logging.info("Text validation returned an error.")
             continue
 
-        logging.info(f"Citation: {formatted_text}")
+        citation = search_quote(formatted_text, post)
+        if (not citation):
+            database.add_record(conn, post_ID)
+            logging.info("Citation is not found")
+            continue
 
-        search_quote(formatted_text)
-        show_out()
-        
+        database.add_record(conn, post_ID, citation)
+        show_out(conn)
+
+        # If SIGINT or SIGTERM received, exit.
         if (killer.kill_now):
+            logging.warning("Committing and shutting down the database connection.")
+            conn.commit()
+            conn.close()
+            logging.warning("Closed.")
             exit("Received a termination signal. Bailing out.")
             
 def save_karma():
+
+    """
+    This function "saves us karma". This means that every 30 minutes, this 
+    function will loop through our last 100 comments and upvote threshold them.
+    If any comment has more than 2 downvotes, so the overall score is -2, the 
+    comment gets auto-deleted. This is a nice function that can save us some
+    points and karma because sometimes the bot can be false positive.
+    """
+
     memepolice = reddit.redditor(bot_name)
     while True:
         for comment in memepolice.comments.new(limit=100):
@@ -171,6 +225,12 @@ def save_karma():
         time.sleep(1800)
                         
 def threads():
+
+    """
+    This function just starts main threads, one to parse submissions,
+    second to save karma.
+    """
+    
     Thread(name="Submissions", target=submission_thread).start()
     Thread(name="Save Karma", target=save_karma).start()
 
