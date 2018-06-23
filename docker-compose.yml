@@ -7,7 +7,7 @@ services:
   env_file: .env
   restart: unless-stopped
   volumes:
-    - ./volumes/postgres:/var/lib/postgres/data
+    - /data/prequelmemes_bot/postgres:/var/lib/postgres/data
 
   adminer:
     image: adminer:latest
