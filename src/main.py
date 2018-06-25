@@ -177,7 +177,7 @@ def submission_thread():
     
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
-        post_ID = post.id
+        post_ID = str(post.id)
         logging.info(f"Starting new submission. {post_ID}")
         latest_posts = database.get_latest(conn)
 
