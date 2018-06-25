@@ -1,83 +1,50 @@
-import sqlite3
+import psycopg2
 
 # If preq.db doesn't exist, creates a new file
-def init_database():
-    conn = sqlite3.connect("preq.db")
+def init_database(conn):
     c = conn.cursor()
-    c.execute("""
+    sql_query = """
     CREATE TABLE IF NOT EXISTS Submissions (
+    rowid SERIAL PRIMARY KEY,
     post_ID TEXT,
-    Quote TEXT DEFAULT "Not Found"
-    );
-    """)
+    Quote TEXT DEFAULT 'Not Found');"""
+    c.execute(sql_query)
     conn.commit()
     c.close()
-    conn.close()
 
-# Inserts a new row with post_ID = post_ID
-# and Quote = "Not Found"
-def insert(post_ID):
-    conn = sqlite3.connect("preq.db")
+def add_record(conn, post_ID, Quote="Not Found"):
     c = conn.cursor()
-    c.execute("""
-    INSERT INTO Submissions (
-    post_ID
-    ) 
-    VALUES (?);
-    """, (str(post_ID), ))
+    sql_query = """
+    INSERT INTO Submissions (post_ID, Quote)
+    VALUES (%s, %s);"""
+    c.execute(sql_query, (post_ID, Quote,))
     conn.commit()
     c.close()
-    conn.close()
 
-# Inserts a quote instead of "Not Found"
-def update_post(post_ID, quote):
-    conn = sqlite3.connect("preq.db")
+def count_quote(conn, Quote):
     c = conn.cursor()
-    c.execute("""
-    UPDATE Submissions
-    SET Quote = ? 
-    WHERE post_ID = ?;
-    """, (quote, str(post_ID), ))
-    conn.commit()
+    sql_query  = """
+    SELECT COUNT(1) FROM Submissions WHERE Quote = %s;"""
+    c.execute(sql_query, (Quote,))
+    res = c.fetchall()[0][0]
     c.close()
-    conn.close()
+    return res
 
-# Returns an array of 100 last checked submissions
-def get_latest():
-    conn = sqlite3.connect("preq.db")
+def get_latest(conn):
     c = conn.cursor()
-    args = c.execute("""
-    SELECT post_ID FROM Submissions ORDER BY post_ID DESC LIMIT 100;
-    """)
-    result = args.fetchall()
-    conn.commit()
+    sql_query = """
+    SELECT post_ID FROM Submissions ORDER BY rowid DESC LIMIT 100;"""
+    c.execute(sql_query)
+    res = c.fetchall()
+    res = [x[0] for x in res]
     c.close()
-    conn.close()
-    return [x[0] for x in result]
+    return res
 
-def get_done():
-    conn = sqlite3.connect("preq.db")
+def get_done(conn):
     c = conn.cursor()
-    args = c.execute("""
-    SELECT * FROM Submissions 
-    WHERE rowid = (SELECT MAX(rowid) FROM Submissions);
-    """)
-    result = list(args.fetchone())
-    conn.commit()
+    sql_query = """
+    SELECT post_ID, Quote FROM Submissions ORDER BY rowid DESC LIMIT 1;"""
+    c.execute(sql_query)
+    res = c.fetchall()[0]
     c.close()
-    conn.close()
-    return result
-
-def find_quote(quote):
-    conn = sqlite3.connect("preq.db")
-    c = conn.cursor()
-    args = c.execute("""
-    SELECT COUNT(*) FROM Submissions 
-    WHERE Quote = ?;
-    """, (quote, ))
-    result = list(args.fetchone())[0]
-    conn.commit()
-    c.close()
-    conn.close()
-    return result
-    
+    return res

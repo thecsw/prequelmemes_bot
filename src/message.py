@@ -1,4 +1,3 @@
-[A]
 message = """
 **Hello there!**
 

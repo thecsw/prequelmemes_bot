@@ -1,10 +1,16 @@
 # My personal garbage in the folders
 *.saves
 *~
-config.py
 
+# SQL dump table
+Submissions.sql
+
+# Old txt files
 logs.txt
 counter.txt
+
+# Our main .env
+.env
 
 # Our SQLite database 
 preq.db
