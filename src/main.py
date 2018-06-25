@@ -17,6 +17,7 @@ import logging
 
 # Separate pip modules/packages
 
+import psycopg2
 import praw
 import pysrt
 
