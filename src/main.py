@@ -172,6 +172,8 @@ def submission_thread():
                             password=config.db_pass,
                             host=config.db_host,
                             port=config.db_port)
+
+    database.init_database(conn)
     
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
