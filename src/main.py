@@ -178,13 +178,13 @@ def submission_thread():
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
         post_ID = str(post.id)
-        logging.info(f"Starting new submission. {post_ID}")
+        logging.info("Starting new submission. {post_ID}")
         latest_posts = database.get_latest(conn)
 
         # If the post has been processed recently,
         # skip it then
         if (post_ID in latest_posts):
-            logging.info("The post already has been evaluated.\n")
+            logging.info("The post already has been evaluated.")
             continue
         
         formatted_text = validate_text(post)
