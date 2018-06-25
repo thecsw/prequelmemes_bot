@@ -4,4 +4,4 @@ pytesseract
 Pillow
 pysrt
 opencv-python
-psycopg2
+psycopg2-binary
