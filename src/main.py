@@ -37,7 +37,7 @@ reddit = praw.Reddit(client_id=config.client_id,
                      user_agent=config.user_agent)
 
 logging.basicConfig(level=logging.INFO,
-                    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s)")
+                    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 subreddit_name = config.subreddit
 bot_name = config.username
@@ -178,7 +178,7 @@ def submission_thread():
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
         post_ID = str(post.id)
-        logging.info("Starting new submission. {post_ID}")
+        logging.info(f"Starting new submission. {post_ID}")
         latest_posts = database.get_latest(conn)
 
         # If the post has been processed recently,
