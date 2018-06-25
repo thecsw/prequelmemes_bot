@@ -102,10 +102,10 @@ def validate_text(post):
         try:
             recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
         except Exception as e:
-            logging.error(f"Error occured. {e}")
+            logging.error("Error occured. {e}")
             return False
     else:
-        logging.info(f"Image not found.")
+        logging.error("Image not found.")
         return False
 
     # Some text filterting.
@@ -114,7 +114,7 @@ def validate_text(post):
 
     # If the list is empty, no need for scanning
     if (len(formatted_text) == 0):
-        logging.info(f"No text found.")
+        logging.error("No text found.")
         return False
     
 def search_quote(formatted_text, post):
@@ -190,7 +190,6 @@ def submission_thread():
         formatted_text = validate_text(post)
         if (not formatted_text):
             database.add_record(conn, post_ID)
-            logging.info("Text validation returned an error.")
             continue
 
         citation = search_quote(formatted_text, post)
