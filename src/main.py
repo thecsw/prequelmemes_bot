@@ -153,7 +153,7 @@ def search_quote(conn, formatted_text, post):
                                            end,
                                            referenced_times
                     )
-#                    reply_post(post, reply_message)
+                    reply_post(post, reply_message)
                     return citation
     return False
                     
