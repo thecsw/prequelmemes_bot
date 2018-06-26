@@ -2,6 +2,9 @@
 *.saves
 *~
 
+# SQL dump files
+*.sql
+
 # SQL dump table
 Submissions.sql
 
