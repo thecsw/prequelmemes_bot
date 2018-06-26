@@ -49,7 +49,7 @@ subreddit = reddit.subreddit(subreddit_name)
 # I created this subreddit just for personal testings
 # Feel free to use it
 
-subs_dir = config.subs_folder
+subs_dir = "./subtitles/"
 
 def add_zero(string):
     if (len(string) == 1):
