@@ -84,7 +84,7 @@ def parse_url(post):
     else:
         return False
 
-def show_out():
+def show_out(conn):
     latest = database.get_done(conn)
     logging.info(f"Found Citation : {latest[0]}")
 
