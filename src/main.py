@@ -86,7 +86,7 @@ def parse_url(post):
 
 def show_out():
     latest = database.get_done(conn)
-    logging.info(f"Submission ID -> {latest[0]}\nText -> {latest[1]}")
+    logging.info(f"Found Citation : {latest[0]}")
 
 def validate_text(post):
 
@@ -102,7 +102,7 @@ def validate_text(post):
         try:
             recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
         except Exception as e:
-            logging.error("Error occured. {e}")
+            logging.error(f"Error occured. {e}")
             return False
     else:
         logging.error("Image not found.")
@@ -116,6 +116,8 @@ def validate_text(post):
     if (len(formatted_text) == 0):
         logging.error("No text found.")
         return False
+
+    return formatted_text
     
 def search_quote(formatted_text, post):
 
@@ -143,7 +145,7 @@ def search_quote(formatted_text, post):
                     start = riptime(quote.start)
                     end = riptime(quote.end)
 
-                    referenced_times = database.find_quote(citation)
+                    referenced_times = database.count_quote(citation)
                     
                     reply_message = modify_message(citation,
                                            movie,
@@ -164,9 +166,9 @@ def submission_thread():
     or SIGTERM is received, the database connection will be
     closed and the program will be gracefully killed.
     """
-    
+
     killer = signal_handler.GracefulKiller
-    
+
     conn = psycopg2.connect(dbname=config.db_name,
                             user=config.db_user,
                             password=config.db_pass,
@@ -178,6 +180,8 @@ def submission_thread():
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
         post_ID = str(post.id)
+        logging.info("")
+        logging.info("------------------------")
         logging.info(f"Starting new submission. {post_ID}")
         latest_posts = database.get_latest(conn)
 
@@ -195,20 +199,13 @@ def submission_thread():
         citation = search_quote(formatted_text, post)
         if (not citation):
             database.add_record(conn, post_ID)
-            logging.info("Citation is not found")
+            logging.info("Citation is not found.")
             continue
 
         database.add_record(conn, post_ID, citation)
         logging.info("Record has been added to the database.")
         show_out(conn)
-
-        # If SIGINT or SIGTERM received, exit.
-        if (killer.kill_now):
-            logging.warning("Committing and shutting down the database connection.")
-            conn.commit()
-            conn.close()
-            logging.warning("Closed.")
-            exit("Received a termination signal. Bailing out.")
+        safe_kill(killer, conn)
             
 def save_karma():
 
@@ -228,7 +225,22 @@ def save_karma():
                 comment.delete()
 
         time.sleep(1800)
-                        
+
+def safe_kill(killer, conn):
+
+    """
+    Gracefully killing.
+    """
+    
+    # If SIGINT or SIGTERM received, exit.
+    if (killer.kill_now):
+        logging.warning("Committing and shutting down the database connection.")
+        conn.commit()
+        conn.close()
+        logging.warning("Closed.")
+        exit("Received a termination signal. Bailing out.")
+    
+        
 def threads():
 
     """
