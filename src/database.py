@@ -43,7 +43,7 @@ def get_latest(conn):
 def get_done(conn):
     c = conn.cursor()
     sql_query = """
-    SELECT post_ID, Quote FROM Submissions ORDER BY rowid DESC LIMIT 1;"""
+    SELECT Quote FROM Submissions ORDER BY rowid DESC LIMIT 1;"""
     c.execute(sql_query)
     res = c.fetchall()[0]
     c.close()
