@@ -119,7 +119,7 @@ def validate_text(post):
 
     return formatted_text
     
-def search_quote(formatted_text, post):
+def search_quote(conn, formatted_text, post):
 
     """
     This function receives a list of strings and tries to find them
@@ -196,7 +196,7 @@ def submission_thread():
             database.add_record(conn, post_ID)
             continue
 
-        citation = search_quote(formatted_text, post)
+        citation = search_quote(conn, formatted_text, post)
         if (not citation):
             database.add_record(conn, post_ID)
             logging.info("Citation is not found.")
