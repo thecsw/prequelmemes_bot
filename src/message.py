@@ -18,7 +18,7 @@ def modify_message(quote, movie, start, end, times):
     reply = reply.replace("%START%", start)
     reply = reply.replace("%END%", end)
     reply = reply.replace("%MOVIE%", movie)
-    reply = reply.replace("%NUMBER%", times)
+    reply = reply.replace("%NUMBER%", str(times))
     return reply
 
 summon_message = """
