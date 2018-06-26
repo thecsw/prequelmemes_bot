@@ -145,8 +145,8 @@ def search_quote(formatted_text, post):
                     start = riptime(quote.start)
                     end = riptime(quote.end)
 
-                    referenced_times = database.count_quote(citation)
-                    
+                    referenced_times = database.count_quote(conn, citation)
+
                     reply_message = modify_message(citation,
                                            movie,
                                            start,
