@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     volumes:
       - /data/prequelmemes_bot/postgres:/var/lib/postgres/data
+      - /data/prequelmemes_bot/backups:/data/prequelmemes_bot/backups
 
   adminer:
     image: adminer:latest
