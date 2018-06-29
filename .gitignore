@@ -2,6 +2,9 @@
 *.saves
 *~
 
+# Shell files
+*.sh
+
 # SQL dump files
 *.sql
 
