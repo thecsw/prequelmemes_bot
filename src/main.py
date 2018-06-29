@@ -66,9 +66,12 @@ def riptime(subrip_time):
     return time_string
 
 def reply_post(post, msg):
-    post.reply(msg)
-    logging.info("Reply sent!")
-    time.sleep(10)
+    try:
+        reply = post.reply(msg)
+        logging.info(f"Reply sent! ID - {reply}")
+    except Exception as e:
+        logging.error(f"Error replying. {e}")
+    time.sleep(10)    
 
 def replace_chars(text):
     text = re.sub('[^a-zA-Z0-9\n]+', '', text)
