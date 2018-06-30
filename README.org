@@ -159,6 +159,7 @@ issues tab or push.
 I don't have an idea of what to do. I made some prototypes, don't know. If the
 bot is going to answer to each comment, that is just a spam.
 
+*** DONE:
 *** DONE [#A] Port the whole thing to docker.
     CLOSED: [2018-06-30 Sat 17:44]
 I find it pretty practical to run the bot in an isolated container instead on a
