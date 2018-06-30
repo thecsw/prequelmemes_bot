@@ -21,88 +21,110 @@ how to deploy the project on a live system.
 
 *** Prerequisites
 
-#+BEGIN_SRC shell
-sudo pip3 install praw
-sudo pip3 install pytesseract
-sudo pip3 install tesseract-ocr
-sudo pip3 install Pillow
-sudo pip3 install tabulate
-#+END_SRC
-
-OR
+What you need is just basic installation of docker and its enabled state.
 
 #+BEGIN_SRC shell
-sudo pip3 install --upgrade -r requirements.txt
-#+END_SRC
-1. [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
-   connect to Reddit's API and extract desired data.
-2. [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
-3. [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
-4. [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
-5. [[https://pypi.org/project/tabulate/][tabulate]] is a pretty-print tabular data in Python, a library and a command-line utility
-
-Btw, each distro has its own kinks with python-opencv. Google on how to install
-it on your environment.
-
-*** Other Dependencies
-
-Tesseract engine should be installed on a local machine to run the text
-recognition properly. We will also install the tesseract OCR trained 
-languages for better accuracy and we will install only the English 
-packages. For more information about other languages, please refer to 
-tesseract's official 
-[[https://github.com/tesseract-ocr/tesseract][repository on Github]].
-
-**** Linux
-
-***** Debian, Ubuntu (aptitude)
-
-#+BEGIN_SRC shell
-sudo apt-get install tesseract-ocr
-sudo apt-get install tesseract-ocr-eng
+sudo apt-get update
+sudo apt-get install docker docker-engine docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
 #+END_SRC
 
-***** Arch Linux (pacman)
-
-#+BEGIN_SRC shell
-sudo pacman -S tesseract
-sudo pacman -S tesseract-data-eng
-#+END_SRC
-
-**** Mac OS (homebrew)
-#+BEGIN_SRC shell
-brew install tesseract
-#+END_SRC
+This will install docker on your machine and enable the docker daemon.
      
 ** Installing and configuring
-
+  
 The only thing that needs to be done before execution is the config. The only
 thing that needs to be done before execution is the config profile. In the
 config profile you should fill your Reddit API details.
-
+   
 For that please follow the steps below
-
+   
 #+BEGIN_SRC shell
-git clone https://github.com/thecsw/prequelmemes_bot
+git clone https://github.com/thecsw/prequelmemes_bot.git
 cd prequelmemes_bot
-mv example.config.py config.py
-nano config.py
+mv .env.example .env
+nano .env
 #+END_SRC
-
+ 
 After filling out the details, save and exit. You're done with installation.
-
+ 
 ** Deployment
 
-Remove the word **'example'** from the title of all files with it.
+In order to deploy the bot, you should have configured the =.env= file. Now, we
+need to build the containers and set them running. Commands below will do the
+building and deployment. The build stage might take several minutes to download
+and install all the required dependencies. The time taken directly depends on
+your hardware. The maintenance details are in the next part.
 
-Just run this
+*NOTE* You also should have configured docker, so you can run =docker-compose=
+and =docker= commands without sudo privileges. Read docker manuals or google how
+to add a user to docker group.
 
 #+BEGIN_SRC shell
-python3 main.py
+docker-compose build -t prequelmemes_bot
+docker-compose up -d
 #+END_SRC
 
 That is everything. All the prequelmemes will be identified. Once and for all,
 the archives will never be incomplete.
+
+** Maintenance
+*** Start the services
+
+This will just start all services in detached mode.
+
+#+BEGIN_SRC shell
+docker-compose up -d
+#+END_SRC
+
+*** Stopping the services
+
+Do not use the =down= command as it will wipe out created containers and
+images. This may cost you your database data. If you want to =down= the bot,
+backup it first. However, the command below will just stop active services and
+will keep the images and containers. After that, you can fire it up again.
+
+#+BEGIN_SRC 
+docker-compose stop
+#+END_SRC
+
+*** Restarting the services
+
+This command will restart all services. 
+
+#+BEGIN_SRC shell
+docker-compose restart
+#+END_SRC
+
+*** Checking logs
+
+To check how the bot is doing, use the command below to view an output from all
+active services. 
+
+#+BEGIN_SRC shell
+docker-compose logs
+#+END_SRC
+
+*** Backing up the database
+
+I wrote a little bash script that will copy the database contents and dump them
+into a file. You need to configure the =backup.sh.example= file first. 
+
+#+BEGIN_SRC shell
+./backup.sh
+#+END_SRC
+
+*** Updating source code
+
+The =./src= folder on the host machine is volumed with =./src= folder in the
+container for the service bot. There is no need for rebuilding if the source
+code has changed. The following command will update the source code and restart
+the services.
+
+#+BEGIN_SRC shell
+git pull && docker-compose restart
+#+END_SRC
 
 ** Source code
 
@@ -110,51 +132,65 @@ The code is heavily commented and all the important modules are being separated
 into different files. Looks pretty, dunno.
 
 ** Built With
- 1. [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
+ 1. [[docker.com][Docker]] is the company driving the container movement and the only container
+    platform provider to address every application across the hybrid cloud. 
+ 2. [[https://github.com/praw-dev/praw][praw]] is Python Reddit API Wrapper. This will be the main and only package to
     connect to Reddit's API and extract desired data.
- 2. [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
- 3. [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
- 4. [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
- 5. [[https://pypi.org/project/tabulate/][tabulate]] is a pretty-print tabular data in Python, a library and a command-line utility
-
-** Authors
- - *Sagindyk Urazayev* - /Initial work/ - [[https://github.com/thecsw][thecsw]]
- - *farhank3389* - /Fixes/ - [[https://github.com/farhank3389][farhank3389]]
+ 3. [[https://pypi.python.org/pypi/opencv-python][python-opencv]] is used for image transformations and computer vision problems.
+ 4. [[https://pypi.python.org/pypi/pytesseract][pytesseract]] is a python wrapper for Google's Tesseract-OCR.
+ 5. [[https://pillow.readthedocs.io/en/latest/][Pillow]] is the Python  Imaging Library by Fredrik Lundh and Contributors.
+ 6. [[https://github.com/byroot/pysrt][pysrt]] is a Python library used to edit or
+    create SubRip files.
 ** License
 
 This project is licensed under the The GNU General Public License (see the
-[[https://github.com/thecsw/prequelmemes_bot/blob/master/LICENSE][LICENSE.md]] file for details), it explains everything pretty well. 
-
+[[./LICENSE][LICENSE]] file for details), it explains everything pretty well. 
+** Authors
+ - *Sagindyk Urazayev* - /Core Developer. Back-end./ - [[https://github.com/thecsw][thecsw]]
+ - *farhank3389* - /Fixes/ - [[https://github.com/farhank3389][farhank3389]]
+ 
 ** Todo list
 
 This is going to be a short todo list. If you have the true loyalty and some
 free time, try to add/fix the following todo items or add your own with the
 issues tab or push.
 
-*** TODO:
-    
-**** TODO [#B] Make some general fixes to the code. 
-Add some little new features, replace old ones with new ones. Make a faster
-version. Just a general quality assurance.
-
-**** TODO [#C] Add a comment feature.
+*** TODO [#C] Add a comment feature.
 I don't have an idea of what to do. I made some prototypes, don't know. If the
 bot is going to answer to each comment, that is just a spam.
 
-*** DONE:
+*** DONE [#A] Port the whole thing to docker.
+    CLOSED: [2018-06-30 Sat 17:44]
+I find it pretty practical to run the bot in an isolated container instead on a
+host machine. This whole thing may take a while...
 
-**** DONE [#A] Edit the mesage body text.
+*** DONE [#A] Port the bot's data to a server-based database.
+    CLOSED: [2018-06-30 Sat 17:46]
+SQLite is a good approach for some mobile applications and so on but it is bad
+if you have a lot of data and want to be somewhat professional. I might go with
+MySQL or PostgreSQL. 
+
+*** DONE [#B] Get rid of tabulate.
+    CLOSED: [2018-06-30 Sat 17:45]
+This is a really bad logging approach, I need to get rid of the ASCII tables.
+    
+*** DONE [#B] Make some general fixes to the code. 
+    CLOSED: [2018-06-30 Sat 17:42]
+Add some little new features, replace old ones with new ones. Make a faster
+version. Just a general quality assurance.
+
+*** DONE [#A] Edit the mesage body text.
     CLOSED: [2018-05-17 Thu 21:28]
 The message body text isn't perfect. It can be more prequelmemed. So yeah, if
 somebody can do it, that would be awesome.
 
-**** DONE [#A] Port the code to python3.6+
-     CLOSED: [2018-05-13 Sun 18:27]
+*** DONE [#A] Port the code to python3.6+
+    CLOSED: [2018-05-13 Sun 18:27]
 Just port the whole code. I am not talking about just using ~python3 main.py~
 instead of ~python main.py~. I am talking about using the new python3+
 features. Like better string formatting, like the ~print(f"{args}...")~.
 
-**** DONE [#A] Change tqdm for another approach
+*** DONE [#A] Change tqdm for another approach
     CLOSED: [2018-05-12 Sat 18:27]
 tqdm is throwing some strange annoying warnings. Will need a more *manual* way
 of counting things.    
