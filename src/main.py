@@ -23,7 +23,7 @@ import pysrt
 
 # Our own scripts
 
-from text_recognition import text_recognition, extract_image
+from text_recognition import *
 from banlist import banlist
 import signal_handler
 import database
@@ -104,8 +104,9 @@ def validate_text(post):
     if (parse_url(post)):
         try:
             image_extracted = extract_image(post)
+            logging.info(f"Filesize -> {check_size('temp')/1000}KB")
             if (not image_extracted):
-                logging.error("Filesize exceeded 10MB.")
+                logging.error(f"Filesize exceeded 10MB.")
                 return False
             
             recog_text = text_recognition(image_extracted).decode("utf-8").lower()
@@ -161,7 +162,7 @@ def search_quote(conn, formatted_text, post):
                                            end,
                                            referenced_times
                     )
-#                    reply_post(post, reply_message)
+                    reply_post(post, reply_message)
                     return citation
     return False
                     
@@ -174,6 +175,9 @@ def submission_thread():
     or SIGTERM is received, the database connection will be
     closed and the program will be gracefully killed.
     """
+
+    logging.warning("Sleeping for 10 seconds. Waiting for the database to turn on...")
+    time.sleep(10)
 
     killer = signal_handler.GracefulKiller
 

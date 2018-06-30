@@ -3,14 +3,13 @@ import os, sys
 import pytesseract
 import cv2
 from PIL import Image
+import logging
 
 def check_size(filename):
     os_stat = os.stat(filename)
-    size = os_stat.st_size
+    size = int(float(os_stat.st_size))
     # If the file size exceeds 10 MB, skip the file
-    if ((size / 1000) > 10 * 1000):
-        return False
-    return True
+    return size
 
 def extract_image(post):
 
@@ -29,8 +28,7 @@ def extract_image(post):
     except:
         urllib.request.urlretrieve(post.url, filename=meme_name)
 
-    if (check_size(meme_name)):
-        os.remove(meme_name)
+    if (check_size(meme_name) > 10 * 1000 * 1000):
         return False
 
     return meme_name
