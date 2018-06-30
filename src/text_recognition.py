@@ -4,6 +4,14 @@ import pytesseract
 import cv2
 from PIL import Image
 
+def check_size(filename):
+    os_stat = os.stat(filename)
+    size = os_stat.st_size
+    # If the file size exceeds 10 MB, skip the file
+    if ((size / 1000) > 10 * 1000):
+        return False
+    return True
+
 def extract_image(post):
 
     """
@@ -25,6 +33,10 @@ def extract_image(post):
         
 def text_recognition(meme_name):
 
+    if (check_size(meme_name)):
+        os.remove(meme_name)
+        return False
+    
     # We load up the image using opencv
     image = cv2.imread(meme_name)                    
 

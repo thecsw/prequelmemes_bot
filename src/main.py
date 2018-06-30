@@ -104,6 +104,9 @@ def validate_text(post):
     if (parse_url(post)):
         try:
             recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
+            if (not recog_text):
+                logging.error("Filesize exceeded 10MB.")
+                return False
         except Exception as e:
             logging.error(f"Error occured. {e}")
             return False
