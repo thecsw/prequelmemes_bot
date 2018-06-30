@@ -29,13 +29,13 @@ def extract_image(post):
     except:
         urllib.request.urlretrieve(post.url, filename=meme_name)
 
-    return meme_name
-        
-def text_recognition(meme_name):
-
     if (check_size(meme_name)):
         os.remove(meme_name)
         return False
+
+    return meme_name
+        
+def text_recognition(meme_name):
     
     # We load up the image using opencv
     image = cv2.imread(meme_name)                    

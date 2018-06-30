@@ -103,10 +103,12 @@ def validate_text(post):
     # Checks if it is possible to find text, if not, return False
     if (parse_url(post)):
         try:
-            recog_text = text_recognition(extract_image(post)).decode("utf-8").lower()
-            if (not recog_text):
+            image_extracted = extract_image(post)
+            if (not image_extracted):
                 logging.error("Filesize exceeded 10MB.")
                 return False
+            
+            recog_text = text_recognition(image_extracted).decode("utf-8").lower()
         except Exception as e:
             logging.error(f"Error occured. {e}")
             return False
@@ -159,7 +161,7 @@ def search_quote(conn, formatted_text, post):
                                            end,
                                            referenced_times
                     )
-                    reply_post(post, reply_message)
+#                    reply_post(post, reply_message)
                     return citation
     return False
                     
