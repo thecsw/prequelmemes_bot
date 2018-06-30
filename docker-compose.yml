@@ -5,22 +5,32 @@ services:
   postgres:
     image: postgres:latest
     env_file: .env
-    restart: unless-stopped
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     volumes:
       - /data/prequelmemes_bot/postgres:/var/lib/postgres/data
-
-  adminer:
-    image: adminer:latest
-    restart: unless-stopped
-    ports:
-      - 8080:8080
-    depends_on:
-      - postgres
 
   app:
     build: .
     env_file: .env
-    restart: unless-stopped
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 100M
+        reservations:
+          cpus: '0.05'
+          memory: 20M
+        
     volumes:
       - ./src:/app/src
     depends_on:
