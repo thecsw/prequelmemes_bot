@@ -4,4 +4,6 @@ _now=$(date +"%m_%d_%Y")
 _file="/tmp/backup_$_now.sql"
 echo "Starting backup to $_file..."
 docker-compose exec postgres pg_dump -d DATABASE_NAME -U USERNAME -W -f "$_file"
+echo "Successfully exported the database to a backup file. Copying the file..."
 docker cp prequelmemes_bot_postgres_1:"$_file" .
+echo "Done."
