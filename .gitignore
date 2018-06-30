@@ -2,6 +2,10 @@
 *.saves
 *~
 
+# Temp files
+temp
+temp-ocr.png
+
 # Shell files
 *.sh
 
