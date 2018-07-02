@@ -6,8 +6,8 @@
 temp
 temp-ocr.png
 
-# Shell files
-*.sh
+# Script files
+backup.sh
 
 # SQL dump files
 *.sql

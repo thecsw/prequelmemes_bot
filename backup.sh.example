@@ -1,4 +1,3 @@
-
 #!/bin/bash
 _now=$(date +"%m_%d_%Y")
 _file="/tmp/backup_$_now.sql"
