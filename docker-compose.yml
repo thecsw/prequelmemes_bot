@@ -13,7 +13,5 @@ services:
     build: .
     env_file: .env
     restart: unless-stopped
-    volumes:
-      - ./src:/app/src
     depends_on:
       - postgres

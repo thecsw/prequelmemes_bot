@@ -5,7 +5,7 @@ RUN apt-get install -y tesseract-ocr tesseract-ocr-dev python-opencv libleptonic
 
 WORKDIR  /app/src
 
-COPY requirements.txt ../
+COPY ./ ../
 RUN pip install --upgrade --no-cache-dir -r ../requirements.txt
 
 CMD ["python", "main.py"]
