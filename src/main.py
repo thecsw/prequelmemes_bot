@@ -1,10 +1,10 @@
 
-"""                              _                                    
- _ __  _ __ ___  __ _ _   _  ___| |_ __ ___   ___ _ __ ___   ___  ___ 
+"""                              _                          
+ _ __  _ __ ___  __ _ _   _  ___| |_ __ ___   ___ _ __ ___   ___  ___
 | '_ \| '__/ _ \/ _` | | | |/ _ \ | '_ ` _ \ / _ \ '_ ` _ \ / _ \/ __|
 | |_) | | |  __/ (_| | |_| |  __/ | | | | | |  __/ | | | | |  __/\__ \
 | .__/|_|  \___|\__, |\__,_|\___|_|_| |_| |_|\___|_| |_| |_|\___||___/
-|_|                |_|                                                
+|_|                |_|                                      
 
 """
 # All the necessary imports
@@ -71,7 +71,7 @@ def reply_post(post, msg):
         logging.info(f"Reply sent! ID - {reply}")
     except Exception as e:
         logging.error(f"Error replying. {e}")
-    time.sleep(10)    
+    time.sleep(10)
 
 def replace_chars(text):
     text = re.sub('[^a-zA-Z0-9\n]+', '', text)
@@ -94,12 +94,12 @@ def show_out(conn):
 def validate_text(post):
 
     """
-    This function is used to extract text from a post's image, filter it 
-    and return a list of found and acceptable strings. If any error has 
+    This function is used to extract text from a post's image, filter it
+    and return a list of found and acceptable strings. If any error has
     occured or the final list after filtering is empty, the function will
     return False. If it returned False, no quote can be found.
     """
-    
+
     # Checks if it is possible to find text, if not, return False
     if (parse_url(post)):
         try:
@@ -108,7 +108,7 @@ def validate_text(post):
             if (not image_extracted):
                 logging.error(f"Filesize exceeded 10MB.")
                 return False
-            
+  
             recog_text = text_recognition(image_extracted).decode("utf-8").lower()
         except Exception as e:
             logging.error(f"Error occured. {e}")
@@ -127,25 +127,25 @@ def validate_text(post):
         return False
 
     return formatted_text
-    
+
 def search_quote(conn, formatted_text, post):
 
     """
     This function receives a list of strings and tries to find them
     in files from subtitles folder. On the first occurence, it will
-    reply to submissions and return found citation. If no citation 
+    reply to submissions and return found citation. If no citation
     found, the function just returns False.
     """
-    
+
     for filename in glob.glob(subs_dir + "*.srt"):
-        
+
         subs = pysrt.open(filename)
 
         for found_word in formatted_text:
             for quote in subs:
                 quote_text = replace_chars(quote.text).lower()
                 quote_text = quote_text.replace("\n","")
-                
+      
                 # The reverse text memes are quite popular now.
                 # We can easily spot even the inverse quotes.
                 if (found_word in quote_text) or (found_word[::-1] in quote_text):
@@ -165,7 +165,7 @@ def search_quote(conn, formatted_text, post):
                     reply_post(post, reply_message)
                     return citation
     return False
-                    
+          
 def submission_thread():
 
     """
@@ -188,7 +188,7 @@ def submission_thread():
                             port=config.db_port)
 
     database.init_database(conn)
-    
+
     for submission in subreddit.stream.submissions():
         post = reddit.submission(submission)
         post_ID = str(post.id)
@@ -202,7 +202,7 @@ def submission_thread():
         if (post_ID in latest_posts):
             logging.info("The post already has been evaluated.")
             continue
-        
+
         formatted_text = validate_text(post)
         if (not formatted_text):
             database.add_record(conn, post_ID)
@@ -218,13 +218,13 @@ def submission_thread():
         logging.info("Record has been added to the database.")
         show_out(conn)
         safe_kill(killer, conn)
-            
+  
 def save_karma():
 
     """
-    This function "saves us karma". This means that every 30 minutes, this 
+    This function "saves us karma". This means that every 30 minutes, this
     function will loop through our last 100 comments and upvote threshold them.
-    If any comment has more than 2 downvotes, so the overall score is -2, the 
+    If any comment has more than 2 downvotes, so the overall score is -2, the
     comment gets auto-deleted. This is a nice function that can save us some
     points and karma because sometimes the bot can be false positive.
     """
@@ -243,7 +243,7 @@ def safe_kill(killer, conn):
     """
     Gracefully killing.
     """
-    
+
     # If SIGINT or SIGTERM received, exit.
     if (killer.kill_now):
         logging.warning("Committing and shutting down the database connection.")
@@ -251,15 +251,15 @@ def safe_kill(killer, conn):
         conn.close()
         logging.warning("Closed.")
         exit("Received a termination signal. Bailing out.")
-    
-        
+
+
 def threads():
 
     """
     This function just starts main threads, one to parse submissions,
     second to save karma.
     """
-    
+
     Thread(name="Submissions", target=submission_thread).start()
     Thread(name="Save Karma", target=save_karma).start()
 
