@@ -12,7 +12,7 @@ ___________________________
 [Source code](https://github.com/thecsw/prequelmemes_bot)
 """
 
-def modify_message(quote, movie, start, end, times):    
+def modify_message(quote, movie, start, end, times):
     reply = message
     reply = reply.replace("%CITATION%", quote)
     reply = reply.replace("%START%", start)
@@ -28,7 +28,7 @@ A lot of people do not know where the quotes come from and I am here to help you
 
 The line "*%CITATION%*" is from **"%MOVIE%"**.
 
-I was summoned by %USERNAME%. If I am wrong, blame it on him! 
+I was summoned by %USERNAME%. If I am wrong, blame it on him!
 ___________________________
 ^(I am a small bot. Still need improving. Want to check out? Go to my source code and commit!)
 
@@ -39,5 +39,5 @@ def modify_summon_message(quote, movie, user):
     reply = summon_message
     reply = reply.replace("%CITATION%", quote)
     reply = reply.replace("%MOVIE%", movie)
-    reply = reply.replace("%USERNAME%", user)    
+    reply = reply.replace("%USERNAME%", user)
     return reply

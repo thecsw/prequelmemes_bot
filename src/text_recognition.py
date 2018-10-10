@@ -20,11 +20,11 @@ def extract_image(post):
     Debian and Ubuntu distros use urllib.urlretrieve
     """
     # We would just call all the temporary images as "temp"
-    meme_name = "temp"          
-    
+    meme_name = "temp"
+
     try:
         # Here we are downloading the appropriate image (png, jpg, jpeg, bmp)
-        urllib.urlretrieve(post.url, filename=meme_name) 
+        urllib.urlretrieve(post.url, filename=meme_name)
     except:
         urllib.request.urlretrieve(post.url, filename=meme_name)
 
@@ -32,23 +32,23 @@ def extract_image(post):
         return False
 
     return meme_name
-        
+
 def text_recognition(meme_name):
-    
+
     # We load up the image using opencv
-    image = cv2.imread(meme_name)                    
+    image = cv2.imread(meme_name)          
 
     # Turning the image to grayscale
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # Making a threshold for the image, text will be more apparent
-    gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] 
+    gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
     # Adding some blur, useful for really noisy images
-    gray = cv2.medianBlur(gray, 3) 
+    gray = cv2.medianBlur(gray, 3)
 
     # Making the temporary, ready file for text recognition
-    filename = "{}-ocr.png".format(meme_name) 
+    filename = "{}-ocr.png".format(meme_name)
 
     # Now, we will save the image
     cv2.imwrite(filename, gray)
@@ -57,7 +57,7 @@ def text_recognition(meme_name):
     img = Image.open(filename)
 
     # As a means of exceptions, need to read out as UTF-8, so no encoding errors would occur
-    recognized_text = pytesseract.image_to_string(img).encode('utf-8') 
+    recognized_text = pytesseract.image_to_string(img).encode('utf-8')
     os.remove(filename)
     os.remove(meme_name)
 
