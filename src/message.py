@@ -6,10 +6,6 @@ The line "*%CITATION%*" is from **"%MOVIE%"**.
 The ~~fun~~ line begins at %START% and finishes at %END%.
 
 This line has been referenced %NUMBER% time(s).
-___________________________
-^(I'm just a simple bot trying to make my way in the universe. Go to my source code and push!)
-
-[Source code](https://github.com/thecsw/prequelmemes_bot)
 """
 
 def modify_message(quote, movie, start, end, times):
