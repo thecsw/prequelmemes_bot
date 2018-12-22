@@ -1,5 +1,5 @@
 import urllib
-import os, sys
+import os
 import pytesseract
 import cv2
 from PIL import Image
@@ -28,7 +28,7 @@ def extract_image(post):
     except:
         urllib.request.urlretrieve(post.url, filename=meme_name)
 
-    if (check_size(meme_name) > 10 * 1000 * 1000):
+    if check_size(meme_name) > 10 * 1000 * 1000:
         return False
 
     return meme_name

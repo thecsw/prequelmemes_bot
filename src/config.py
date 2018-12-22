@@ -1,21 +1,21 @@
 import os
 
 # This is for reddit
-client_id = os.getenv("BOT_CLIENT_ID")
-client_secret = os.getenv("BOT_CLIENT_SECRET")
-username = os.getenv("BOT_USERNAME")
-password = os.getenv("BOT_PASSWORD")
-user_agent = os.getenv("BOT_USER_AGENT")
+CLIENT_ID = os.getenv("BOT_CLIENT_ID")
+CLIENT_SECRET = os.getenv("BOT_CLIENT_SECRET")
+USERNAME = os.getenv("BOT_USERNAME")
+PASSWORD = os.getenv("BOT_PASSWORD")
+USER_AGENT = os.getenv("BOT_USER_AGENT")
 
 # Subreddit name
-subreddit = os.getenv("SUBREDDIT")
+SUBREDDIT = os.getenv("SUBREDDIT")
 
 # Subtitles folder
-subs_folder = os.getenv("SUBS_FOLDER")
+SUBS_FOLDER = os.getenv("SUBS_FOLDER")
 
 # This is for postgres server
-db_host = os.getenv("POSTGRES_HOST")
-db_port = os.getenv("POSTGRES_PORT")
-db_user = os.getenv("POSTGRES_USER")
-db_pass = os.getenv("POSTGRES_PASSWORD")
-db_name = os.getenv("POSTGRES_DB")
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_PORT = os.getenv("POSTGRES_PORT")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASS = os.getenv("POSTGRES_PASSWORD")
+DB_NAME = os.getenv("POSTGRES_DB")
