@@ -11,8 +11,6 @@ The ~~fun~~ line begins at %START% and finishes at %END%.
 
 This line has been referenced %NUMBER% time(s).
 
---
-
 [^Clanker ^is ^open-source](https://github.com/thecsw/prequelmemes_bot)
 """
 
